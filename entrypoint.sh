@@ -29,8 +29,10 @@ set -- nix shell github:catornot/catornot-flakes#nswine --impure --command \
     nix run github:catornot/catornot-flakes#nswrap --impure -- \
     -dedicated \
     -port "$PORT"
-if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-    NS_EXTRA_ONELINE=$(printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ')
-    eval "set -- \"$@\" $NS_EXTRA_ONELINE"
-fi
-exec "$@"
+    NS_EXTRA_ONELINE=""
+    if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
+        NS_EXTRA_ONELINE=$(printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ')
+    fi
+
+    CMD="nix shell github:catornot/catornot-flakes#nswine --impure --command nix run github:catornot/catornot-flakes#nswrap --impure -- -dedicated -port \"$PORT\" $NS_EXTRA_ONELINE"
+    exec sh -c "$CMD"
