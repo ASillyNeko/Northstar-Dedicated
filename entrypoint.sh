@@ -26,8 +26,11 @@ if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
     done
 fi
 
-exec nix shell github:catornot/catornot-flakes#nswine --impure --command \
+set -- nix shell github:catornot/catornot-flakes#nswine --impure --command \
     nix run github:catornot/catornot-flakes#nswrap --impure -- \
     -dedicated \
-    -port "$PORT" \
-    $NS_EXTRA_ARGUMENTS
+    -port "$PORT"
+if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
+    eval "set -- \"$@\" $NS_EXTRA_ARGUMENTS"
+fi
+exec "$@"
