@@ -19,8 +19,8 @@ if [ -f "$DEFAULT_CFG" ]; then
 fi
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-    printf '%s\n' "$NS_EXTRA_ARGUMENTS" | grep -E '^[+-][^ ]+' | while read -r arg; do
-        key=$(echo "$arg" | sed 's/^[+-]//' | awk '{print $1}')
+    printf '%s\n' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^[+-]' | while read -r arg; do
+        key=$(printf '%s' "$arg" | sed 's/^[+-]//' | awk '{print $1}')
         [ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"
     done
 fi
@@ -30,6 +30,7 @@ set -- nix shell github:catornot/catornot-flakes#nswine --impure --command \
     -dedicated \
     -port "$PORT"
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-    eval "set -- \"$@\" $NS_EXTRA_ARGUMENTS"
+    NS_EXTRA_ONELINE=$(printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ')
+    eval "set -- \"$@\" $NS_EXTRA_ONELINE"
 fi
 exec "$@"
