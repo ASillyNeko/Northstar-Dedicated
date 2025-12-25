@@ -3,6 +3,9 @@ name: Build and Release Docker Image
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile'
+      - 'entrypoint.sh'
   workflow_dispatch:
 
 env:
