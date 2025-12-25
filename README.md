@@ -22,7 +22,7 @@ services:
         NS_EXTRA_ARGUMENTS=
         +ns_server_name "Unnamed Northstar Server"
         +ns_server_desc ""
-		-disablelogs
+        -disablelogs
     volumes:
       - .:/titanfall2
     restart: always
