@@ -19,10 +19,9 @@ if [ -f "$DEFAULT_CFG" ]; then
 fi
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-    echo "$NS_EXTRA_ARGUMENTS" | while read -r arg; do
-        [ -z "$arg" ] && continue
-        key=$(echo "$arg" | sed 's/^+//' | awk '{print $1}')
-        sed -i "/^$key[ \t]/d" "$TARGET_CFG"
+    printf '%s\n' "$NS_EXTRA_ARGUMENTS" | grep -E '^[+-][^ ]+' | while read -r arg; do
+        key=$(echo "$arg" | sed 's/^[+-]//' | awk '{print $1}')
+        [ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"
     done
 fi
 
