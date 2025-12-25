@@ -17,6 +17,17 @@ if [ -f "$DEFAULT_CFG" ]; then
     cp "$DEFAULT_CFG" "$TARGET_CFG"
 fi
 
+if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
+    echo "$NS_EXTRA_ARGUMENTS" | while read -r line; do
+        if [ -z "$line" ]; then continue; fi
+
+        clean_command=$(echo "$line" | sed 's/^+//')
+        key=$(echo "$clean_command" | awk '{print $1}')
+
+        sed -i "/^$key[ \t]/d" "$TARGET_CFG"
+    done
+fi
+
 exec nix shell github:catornot/catornot-flakes#nswine --impure --command \
   nix run github:catornot/catornot-flakes#nswrap --impure -- \
   -dedicated \
