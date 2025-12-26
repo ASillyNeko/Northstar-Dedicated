@@ -6,7 +6,6 @@ RUN mkdir -p /etc/nix && \
 ENV TF2_DIR=/titanfall2
 ENV WINEPREFIX=/wine/wine
 ENV NSWRAP_EXTWINE=1
-ENV NSWRAP_NOWATCHDOGQUIT=1
 
 RUN mkdir -p /wine/wine && mkdir -p /etc/northstar
 

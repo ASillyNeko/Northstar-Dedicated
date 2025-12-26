@@ -1,10 +1,6 @@
 #!/bin/sh
 set -e
 
-if [ -d "$WINEPREFIX" ]; then
-    chown -R root:root "$WINEPREFIX"
-fi
-
 cd "$TF2_DIR"
 PORT=${NS_PORT:-37015}
 
