@@ -22,11 +22,12 @@ services:
         NS_EXTRA_ARGUMENTS=
         +ns_server_name "Unnamed Northstar Server"
         +ns_server_desc ""
-        -disablelogs
     volumes:
       - .:/titanfall2
     restart: always
 ```
+
+Add `NSWRAP_NOWATCHDOGQUIT=1` If You Use `-disablelogs` Otherwise It Will Quit Randomly Probably Shouldn't Use `-disablelogs` Anyways
 
 Don't Remove `network_mode: host`
 
