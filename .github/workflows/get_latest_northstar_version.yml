@@ -54,12 +54,13 @@ jobs:
           git commit -m "Update Northstar to version ${LATEST_VERSION}"
           git push origin HEAD:main
 
-          - name: Log in to the Container registry
-          uses: docker/login-action@v3
-          with:
-            registry: ${{ env.REGISTRY }}
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        if: steps.git-check.outputs.no_changes == 'false'
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
   
       - name: Extract metadata (tags, labels) for Docker
         id: meta
