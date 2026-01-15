@@ -6,6 +6,7 @@ on:
     paths:
       - 'Dockerfile'
       - 'entrypoint.sh'
+      - 'get_northstar_version.sh'
   workflow_dispatch:
 
 env:

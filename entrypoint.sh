@@ -1,17 +1,35 @@
 #!/bin/sh
 set -e
 
-cd "$TF2_DIR"
+TMP_BASE="/tmp/northstar"
+mkdir -p "$TMP_BASE"
+find "$TMP_BASE" -maxdepth 1 -type d -name 'nstmp*' -exec rm -rf {} + 2>/dev/null || true
+export TMPDIR="$TMP_BASE/nstmp$$$(shuf -i 1000-9999 -n 1)"
+mkdir -p "$TMPDIR"
+
+if [ ! -d "$TF2_DIR/" ]; then
+	echo "TF2 directory $TF2_DIR does not exist or is not a directory."
+	exit 1
+fi
+
+if [ ! -d "$NORTHSTAR_DIR/" ]; then
+	echo "Northstar directory $NORTHSTAR_DIR does not exist or is not a directory."
+	exit 1
+fi
+
+ln -sf "$TF2_DIR"/* "$TMPDIR/"
+ln -sf "$NORTHSTAR_DIR"/* "$TMPDIR/"
+
+cd "$TMPDIR"
 PORT=${NS_PORT:-37015}
 
-TARGET_CFG="R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
-DEFAULT_CFG="/etc/northstar/autoexec_ns_server.cfg"
-ARGS_FILE="ns_startup_args.txt"
+TARGET_CFG="$TMPDIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
+BACKUP_CFG="$TARGET_CFG.bak"
 
-
-mkdir -p "$(dirname "$TARGET_CFG")"
-if [ -f "$DEFAULT_CFG" ]; then
-    cp "$DEFAULT_CFG" "$TARGET_CFG"
+if [ -f "$BACKUP_CFG" ]; then
+	cp "$BACKUP_CFG" "$TARGET_CFG"
+else
+	cp "$TARGET_CFG" "$BACKUP_CFG"
 fi
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
