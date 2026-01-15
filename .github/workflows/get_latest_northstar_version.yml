@@ -27,9 +27,7 @@ jobs:
           LATEST_VERSION_SHA256=$(jq -r '.assets[0].digest' latest_release.json | cut -d':' -f2)
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
           echo "LATEST_VERSION_SHA256=$LATEST_VERSION_SHA256" >> $GITHUB_ENV
-
-      - name: Remove latest_release.json
-        run: rm latest_release.json
+          rm latest_release.json
 
       - name: Update get_northstar_version.sh
         run: |
