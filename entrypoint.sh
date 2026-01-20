@@ -17,8 +17,30 @@ if [ ! -d "$NORTHSTAR_DIR/" ]; then
 	exit 1
 fi
 
-ln -sf "$TF2_DIR"/* "$TMPDIR/"
-ln -sf "$NORTHSTAR_DIR"/* "$TMPDIR/"
+
+find "$TF2_DIR" -type d | while read -r tf2_dir; do
+	rel_path="${tf2_dir#$TF2_DIR}"
+	rel_path="${rel_path#/}"
+	[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
+done
+
+find "$NORTHSTAR_DIR" -type d | while read -r ns_dir; do
+	rel_path="${ns_dir#$NORTHSTAR_DIR}"
+	rel_path="${rel_path#/}"
+	[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
+done
+
+find "$TF2_DIR" -type f -o -type l | while read -r tf2_file; do
+	rel_path="${tf2_file#$TF2_DIR}"
+	rel_path="${rel_path#/}"
+	[ -n "$rel_path" ] && ln -sf "$tf2_file" "$TMPDIR/$rel_path"
+done
+
+find "$NORTHSTAR_DIR" -type f -o -type l | while read -r ns_file; do
+	rel_path="${ns_file#$NORTHSTAR_DIR}"
+	rel_path="${rel_path#/}"
+	[ -n "$rel_path" ] && ln -sf "$ns_file" "$TMPDIR/$rel_path"
+done
 
 cd "$TMPDIR"
 PORT=${NS_PORT:-37015}
