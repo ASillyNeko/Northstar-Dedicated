@@ -24,6 +24,7 @@ RUN . /get_northstar_version.sh && \
 WORKDIR /build
 
 RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
+	nix build github:catornot/catornot-flakes#nswine-env && \
 	nix-collect-garbage -d
 
 RUN nix build github:catornot/catornot-flakes#nswine && \
