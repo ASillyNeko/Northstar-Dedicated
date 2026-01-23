@@ -3,11 +3,9 @@ name: Build and Release Docker Image
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'Dockerfile'
-      - 'entrypoint.sh'
-      - 'get_northstar_version.sh'
+    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.txt' ]
   workflow_dispatch:
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
@@ -22,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -41,9 +39,10 @@ jobs:
             type=sha
 
       - name: Build and release Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}

@@ -1,7 +1,13 @@
 FROM nixos/nix:2.33.1
 
+ARG GITHUB_TOKEN
+
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+
+RUN if [ -n "$GITHUB_TOKEN" ]; then \
+		echo "access-tokens = github.com=$GITHUB_TOKEN" >> /etc/nix/nix.conf; \
+	fi
 
 ENV TF2_DIR=/titanfall2
 ENV NORTHSTAR_DIR=/northstar
@@ -9,13 +15,12 @@ ENV WINEPREFIX=/wine/wine
 ENV NSWRAP_EXTWINE=1
 
 RUN mkdir -p /wine/wine && mkdir -p /northstar
-COPY get_northstar_version.sh /get_northstar_version.sh
 
-RUN chmod +x /get_northstar_version.sh
+COPY northstar_version.txt /northstar_version.txt
 
 RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils
 
-RUN . /get_northstar_version.sh && \
+RUN . /northstar_version.txt && \
 	curl -L https://github.com/R2Northstar/Northstar/releases/download/${NORTHSTAR_VERSION}/Northstar.release.${NORTHSTAR_VERSION}.zip -o northstar.zip && \
 	sha256sum -c <(echo "${NORTHSTAR_GITHUB_SHA256SUM#sha256:}  northstar.zip") && \
 	unzip northstar.zip -d /northstar/ && \

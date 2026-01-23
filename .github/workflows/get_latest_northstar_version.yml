@@ -1,4 +1,4 @@
-name: "Get Latest Northstar Version"
+name: Get Latest Northstar Version
 
 on:
   schedule:
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get Latest Northstar Version
         run: |
@@ -29,10 +29,10 @@ jobs:
           echo "LATEST_VERSION_SHA256=$LATEST_VERSION_SHA256" >> $GITHUB_ENV
           rm latest_release.json
 
-      - name: Update get_northstar_version.sh
+      - name: Update northstar_version.txt
         run: |
-          sed -i "s/export NORTHSTAR_VERSION=.*/export NORTHSTAR_VERSION=${LATEST_VERSION}/" get_northstar_version.sh
-          sed -i "s/export NORTHSTAR_GITHUB_SHA256SUM=.*/export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}/" get_northstar_version.sh
+          sed -i "s/export NORTHSTAR_VERSION=.*/export NORTHSTAR_VERSION=${LATEST_VERSION}/" northstar_version.txt
+          sed -i "s/export NORTHSTAR_GITHUB_SHA256SUM=.*/export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}/" northstar_version.txt
 
       - name: Check for Changes
         id: git-check
@@ -43,38 +43,19 @@ jobs:
             echo "no_changes=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit And Push Changes
+      - name: Commit and Push Changes
         if: steps.git-check.outputs.no_changes == 'false'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add get_northstar_version.sh
+          git add northstar_version.txt
           git commit -m "Update Northstar to version ${LATEST_VERSION}"
           git push origin HEAD:main
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        if: steps.git-check.outputs.no_changes == 'false'
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-  
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        if: steps.git-check.outputs.no_changes == 'false'
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest
-            type=sha
-
-      - name: Build and release Docker image
-        uses: docker/build-push-action@v5
-        if: steps.git-check.outputs.no_changes == 'false'
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+  build-and-release:
+    needs: get-latest-version
+    if: needs.get-latest-version.outputs.no_changes == 'false'
+    permissions:
+      contents: write
+      packages: write
+    uses: ./.github/workflows/build_and_release.yml
