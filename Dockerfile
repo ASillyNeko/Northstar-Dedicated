@@ -1,7 +1,7 @@
 FROM nixos/nix:2.31.3
 
 RUN mkdir -p /etc/nix && \
-    echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
+	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
 
 ENV TF2_DIR=/titanfall2
 ENV NORTHSTAR_DIR=/northstar
@@ -16,7 +16,7 @@ RUN chmod +x /get_northstar_version.sh
 RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils
 
 RUN . /get_northstar_version.sh && \
-    curl -L https://github.com/R2Northstar/Northstar/releases/download/${NORTHSTAR_VERSION}/Northstar.release.${NORTHSTAR_VERSION}.zip -o northstar.zip && \
+	curl -L https://github.com/R2Northstar/Northstar/releases/download/${NORTHSTAR_VERSION}/Northstar.release.${NORTHSTAR_VERSION}.zip -o northstar.zip && \
 	sha256sum -c <(echo "${NORTHSTAR_GITHUB_SHA256SUM#sha256:}  northstar.zip") && \
 	unzip northstar.zip -d /northstar/ && \
 	rm northstar.zip
@@ -24,9 +24,12 @@ RUN . /get_northstar_version.sh && \
 WORKDIR /build
 
 RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
-    nix build github:catornot/catornot-flakes#nswine-env && \
-    nix-collect-garbage -d && \
-    rm -rf /root/.cache /tmp/*
+	nix build github:catornot/catornot-flakes#nswine-env && \
+	nix-collect-garbage -d && \
+	rm -rf /root/.cache /tmp/*
+
+RUN nix build github:catornot/catornot-flakes#nswine && \
+	nix build github:catornot/catornot-flakes#nswrap
 
 COPY entrypoint.sh /entrypoint.sh
 
