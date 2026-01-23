@@ -5,11 +5,11 @@ on:
     branches: [ "main" ]
     paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
   workflow_dispatch:
-  workflow_call:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -49,4 +49,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}

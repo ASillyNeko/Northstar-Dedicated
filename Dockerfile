@@ -1,6 +1,6 @@
 FROM nixos/nix:2.33.1
 
-ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=""
 
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
