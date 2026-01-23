@@ -15,6 +15,8 @@ jobs:
     permissions:
       contents: write
       packages: write
+    outputs:
+      no_changes: ${{ steps.git-check.outputs.no_changes }}
 
     steps:
       - name: Checkout repository
