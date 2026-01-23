@@ -3,7 +3,7 @@ name: Build and Release Docker Image
 on:
   push:
     branches: [ "main" ]
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.txt' ]
+    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
   workflow_dispatch:
   workflow_call:
 

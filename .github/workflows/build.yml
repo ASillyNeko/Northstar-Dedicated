@@ -3,7 +3,7 @@ name: Build Docker Image
 on:
   push:
     branches-ignore: [ "main" ]
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.txt' ]
+    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
   pull_request:
   workflow_dispatch:
 

@@ -29,10 +29,10 @@ jobs:
           echo "LATEST_VERSION_SHA256=$LATEST_VERSION_SHA256" >> $GITHUB_ENV
           rm latest_release.json
 
-      - name: Update northstar_version.txt
+      - name: Update northstar_version.sh
         run: |
-          sed -i "s/export NORTHSTAR_VERSION=.*/export NORTHSTAR_VERSION=${LATEST_VERSION}/" northstar_version.txt
-          sed -i "s/export NORTHSTAR_GITHUB_SHA256SUM=.*/export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}/" northstar_version.txt
+          sed -i "s/export NORTHSTAR_VERSION=.*/export NORTHSTAR_VERSION=${LATEST_VERSION}/" northstar_version.sh
+          sed -i "s/export NORTHSTAR_GITHUB_SHA256SUM=.*/export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}/" northstar_version.sh
 
       - name: Check for Changes
         id: git-check
@@ -48,7 +48,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add northstar_version.txt
+          git add northstar_version.sh
           git commit -m "Update Northstar to version ${LATEST_VERSION}"
           git push origin HEAD:main
 
