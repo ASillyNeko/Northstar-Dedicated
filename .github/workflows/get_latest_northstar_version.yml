@@ -31,8 +31,8 @@ jobs:
 
       - name: Update northstar_version.sh
         run: |
-          sed -i "s/export NORTHSTAR_VERSION=.*/export NORTHSTAR_VERSION=${LATEST_VERSION}/" northstar_version.sh
-          sed -i "s/export NORTHSTAR_GITHUB_SHA256SUM=.*/export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}/" northstar_version.sh
+          echo "export NORTHSTAR_VERSION=${LATEST_VERSION}" > northstar_version.sh
+          echo "export NORTHSTAR_GITHUB_SHA256SUM=sha256:${LATEST_VERSION_SHA256}" >> northstar_version.sh
 
       - name: Check for Changes
         id: git-check
