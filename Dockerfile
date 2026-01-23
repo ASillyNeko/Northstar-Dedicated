@@ -1,13 +1,7 @@
 FROM nixos/nix:2.33.1
 
-ENV GITHUB_TOKEN=""
-
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
-
-RUN if [ -n "$GITHUB_TOKEN" ]; then \
-		echo "access-tokens = github.com=$GITHUB_TOKEN" >> /etc/nix/nix.conf; \
-	fi
 
 ENV TF2_DIR=/titanfall2
 ENV NORTHSTAR_DIR=/northstar
