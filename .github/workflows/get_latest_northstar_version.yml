@@ -15,8 +15,6 @@ jobs:
     permissions:
       contents: write
       packages: write
-    outputs:
-      no_changes: ${{ steps.git-check.outputs.no_changes }}
 
     steps:
       - name: Checkout repository
@@ -54,11 +52,9 @@ jobs:
           git commit -m "Update Northstar to version ${LATEST_VERSION}"
           git push origin HEAD:main
 
-      - name: Get Northstar Version
-        run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
-
       - name: Log in to the Container registry
         uses: docker/login-action@v3
+        if: steps.git-check.outputs.no_changes == 'false'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -67,15 +63,17 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
+        if: steps.git-check.outputs.no_changes == 'false'
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
-            type=raw,value=${{ env.NORTHSTAR_VERSION }}
+            type=raw,value=${{ env.LATEST_VERSION }}
             type=sha
 
       - name: Build and release Docker image
         uses: docker/build-push-action@v6
+        if: steps.git-check.outputs.no_changes == 'false'
         with:
           context: .
           push: true
