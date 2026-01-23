@@ -21,6 +21,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Get Northstar Version
+        run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -28,6 +31,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
+            type=version,value=${{ env.NORTHSTAR_VERSION }}
             type=sha
 
       - name: Build Docker image

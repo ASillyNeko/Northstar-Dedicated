@@ -17,6 +17,7 @@ ENV NSWRAP_EXTWINE=1
 RUN mkdir -p /wine/wine && mkdir -p /northstar
 
 COPY northstar_version.sh /northstar_version.sh
+
 RUN chmod +x /northstar_version.sh
 
 RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils
