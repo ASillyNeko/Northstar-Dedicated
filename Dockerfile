@@ -1,4 +1,4 @@
-FROM nixos/nix:2.31.3
+FROM nixos/nix:2.33.1
 
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
@@ -29,7 +29,7 @@ RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
 RUN nix build github:catornot/catornot-flakes#nswine && \
 	nix build github:catornot/catornot-flakes#nswrap
 
-RUN rm -rf /root/.cache /tmp/*
+RUN rm -rf /root/.cache /tmp/* /var/cache/* /var/tmp/*
 
 COPY entrypoint.sh /entrypoint.sh
 
