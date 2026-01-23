@@ -22,7 +22,7 @@ jobs:
 
       - name: Get Latest Northstar Version
         run: |
-          curl -s https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
           LATEST_VERSION=$(jq -r '.tag_name' latest_release.json)
           LATEST_VERSION_SHA256=$(jq -r '.assets[0].digest' latest_release.json | cut -d':' -f2)
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
@@ -37,7 +37,7 @@ jobs:
       - name: Check for Changes
         id: git-check
         run: |
-          if git diff --quiet; then
+          if [ -z "$(git status --porcelain)" ]; then
             echo "no_changes=true" >> $GITHUB_OUTPUT
           else
             echo "no_changes=false" >> $GITHUB_OUTPUT
