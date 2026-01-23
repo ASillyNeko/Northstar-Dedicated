@@ -31,8 +31,6 @@ RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
 RUN nix build github:catornot/catornot-flakes#nswine && \
 	nix build github:catornot/catornot-flakes#nswrap
 
-RUN rm -rf /root/.cache /tmp/* /var/cache/* /var/tmp/*
-
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
