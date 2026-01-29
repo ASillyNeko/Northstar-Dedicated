@@ -3,8 +3,8 @@ FROM nixos/nix:2.33.1
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
 
-ENV TF2_DIR=/titanfall2
-ENV NORTHSTAR_DIR=/northstar
+ENV SYMLINK_TITANFALL2_FILES=0
+ENV SYMLINK_NORTHSTAR_FILES=0
 ENV WINEPREFIX=/wine/wine
 ENV NSWRAP_EXTWINE=1
 

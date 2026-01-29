@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+TF2_DIR=/titanfall2
+NORTHSTAR_DIR=/northstar
 TMP_BASE="/tmp/northstar"
 mkdir -p "$TMP_BASE"
 find "$TMP_BASE" -maxdepth 1 -type d -name 'nstmp*' -exec rm -rf {} + 2>/dev/null || true
@@ -17,30 +19,34 @@ if [ ! -d "$NORTHSTAR_DIR/" ]; then
 	exit 1
 fi
 
+if [ "${SYMLINK_TITANFALL2_FILES:-0}" -eq 1 ]; then
+	find "$TF2_DIR" -type d | while read -r tf2_dir; do
+		rel_path="${tf2_dir#$TF2_DIR}"
+		rel_path="${rel_path#/}"
+		[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
+	done
 
-find "$TF2_DIR" -type d | while read -r tf2_dir; do
-	rel_path="${tf2_dir#$TF2_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
-done
+	find "$NORTHSTAR_DIR" -type d | while read -r ns_dir; do
+		rel_path="${ns_dir#$NORTHSTAR_DIR}"
+		rel_path="${rel_path#/}"
+		[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
+	done
 
-find "$NORTHSTAR_DIR" -type d | while read -r ns_dir; do
-	rel_path="${ns_dir#$NORTHSTAR_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && mkdir -p "$TMPDIR/$rel_path"
-done
+	find "$TF2_DIR" -type f -o -type l | while read -r tf2_file; do
+		rel_path="${tf2_file#$TF2_DIR}"
+		rel_path="${rel_path#/}"
+		[ -n "$rel_path" ] && ln -sf "$tf2_file" "$TMPDIR/$rel_path"
+	done
 
-find "$TF2_DIR" -type f -o -type l | while read -r tf2_file; do
-	rel_path="${tf2_file#$TF2_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && ln -sf "$tf2_file" "$TMPDIR/$rel_path"
-done
-
-find "$NORTHSTAR_DIR" -type f -o -type l | while read -r ns_file; do
-	rel_path="${ns_file#$NORTHSTAR_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && ln -sf "$ns_file" "$TMPDIR/$rel_path"
-done
+	find "$NORTHSTAR_DIR" -type f -o -type l | while read -r ns_file; do
+		rel_path="${ns_file#$NORTHSTAR_DIR}"
+		rel_path="${rel_path#/}"
+		[ -n "$rel_path" ] && ln -sf "$ns_file" "$TMPDIR/$rel_path"
+	done
+else
+	cp -a "$TF2_DIR/." "$TMPDIR/"
+	cp -a "$NORTHSTAR_DIR/." "$TMPDIR/"
+fi
 
 cd "$TMPDIR"
 PORT=${NS_PORT:-37015}
