@@ -19,7 +19,7 @@ if [ ! -d "$NORTHSTAR_DIR/" ]; then
 	exit 1
 fi
 
-if [ "${SYMLINK_TITANFALL2_FILES:-0}" -eq 1 ]; then
+if [ "${SYMLINK_FILES:-0}" -eq 1 ]; then
 	find "$TF2_DIR" -type d | while read -r tf2_dir; do
 		rel_path="${tf2_dir#$TF2_DIR}"
 		rel_path="${rel_path#/}"

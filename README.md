@@ -18,8 +18,7 @@ services:
     network_mode: host # DO NOT REMOVE
     environment:
       - NS_PORT=37015
-      - SYMLINK_TITANFALL2_FILES=0 # Set this to 1 if you want to save disk space but you risk getting Data Execution Prevention (DEP) crashes if multiple servers use the same directory
-      - SYMLINK_NORTHSTAR_FILES=0 # Set this to 1 if you want to save disk space but you risk getting Data Execution Prevention (DEP) crashes if multiple servers use the same directory
+      - SYMLINK_FILES=1 # Keep this at 1 if you want to save disk space but you risk getting Data Execution Prevention (DEP) crashes if multiple servers use the same directory
       - NSWRAP_NOWATCHDOGQUIT=0 # Set this to 1 if your server has ns_report_server_to_masterserver 0 or is a singleplayer with ns_report_sp_server_to_masterserver 0
       - |
         NS_EXTRA_ARGUMENTS=
