@@ -1,4 +1,4 @@
-FROM nixos/nix:2.33.1
+FROM nixos/nix:2.33.3
 
 RUN mkdir -p /etc/nix && \
 	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf
