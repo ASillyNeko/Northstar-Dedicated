@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1
 
 # go version
-ARG GO="1.24.2"
+ARG GO="1.26.0"
 
 # wine version
-ARG WINE="10.6"
+ARG WINE="11.2"
 
 # hangover version
 ARG HANGOVER="1"
 
 # debian version
-ARG DEBIAN="12"
+ARG DEBIAN="13"
 ARG DEBIAN_CODENAME="bookworm"
 
 # nswine options

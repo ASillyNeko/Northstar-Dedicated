@@ -24,10 +24,12 @@ RUN . /northstar_version.sh && \
 
 WORKDIR /build
 
-RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
-	nix build ./catornot-catornot-flakes#nswine-env
+COPY catornot-catornot-flakes/ ./catornot-catornot-flakes
 
-RUN nix build ./catornot-catornot-flakes#nswrap
+RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
+	nix build ./catornot-catornot-flakes#nswine-env && \
+	nix build ./catornot-catornot-flakes#nswrap && \
+	rm -rf ./catornot-catornot-flakes/
 
 COPY entrypoint.sh /entrypoint.sh
 
