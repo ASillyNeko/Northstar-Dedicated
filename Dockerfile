@@ -12,7 +12,7 @@ RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils nixpkgs.gnused nixp
 COPY catornot-catornot-flakes/ /catornot-catornot-flakes
 
 RUN mkdir -p /etc/nix && \
-	echo "experimental-features = nix-command flakes" >> /etc/nix/nix.conf && \
+	echo -e "experimental-features = nix-command flakes\ndownload-buffer-size = 536870912" >> /etc/nix/nix.conf && \
 	nix build /catornot-catornot-flakes#nswine -o /nswine && \
 	nix build /catornot-catornot-flakes#nswrap -o /nswrap && \
 	nix-collect-garbage -d && \
