@@ -9,7 +9,7 @@
   lib,
 }:
 let
-  wine-ns = wine64Packages.unstable;
+  wine-ns = wine64Packages.staging_11;
   nswine = buildGoModule {
     pname = "nswine";
     version = "1.0.0";
