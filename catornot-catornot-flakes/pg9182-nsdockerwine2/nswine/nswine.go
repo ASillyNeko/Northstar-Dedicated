@@ -32,7 +32,6 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -96,21 +95,6 @@ func run() error {
 		wineBuildID = strings.TrimRight(string(buf), "\n")
 	}
 	slog.Info("got wine version", "build_id", wineBuildID)
-
-	// TODO: patch unix/ntdll.so asciiz string "wine-#.## (Type)" kind of thing (wine --version output) to change the output of wine_get_build_id to "nsSHA[:7]"
-
-	slog.Info("patching default graphics driver to null")
-	// 	- this is the only way other than recompiling to get it to use nulldrv during prefix initialization
-	if err := transform(filepath.Join(*Prefix, "lib/wine", archt("x86_64-windows", "aarch64-windows"), "explorer.exe"), func(buf []byte) ([]byte, error) {
-		i := bytes.Index(buf, u8to16[string, []byte]("mac,x11,wayland\x00"))
-		if i == -1 {
-			return nil, fmt.Errorf("couldn't find default graphics driver value")
-		}
-		copy(buf[:i], u8to16[string, []byte]("null\x00"))
-		return buf, nil
-	}); err != nil {
-		return err
-	}
 
 	if *Optimize {
 		slog.Info("removing non-essential executables")
@@ -548,65 +532,10 @@ func run() error {
 		return err
 	}
 
-	wineEnv := append(os.Environ(), "WINEPREFIX="+*Output, "WINEARCH=win64", "USER=nswrap")
-
-	slog.Info("creating wineprefix")
-	{
-		winedebug := "err-ole,fixme-actctx"
-		if *Debug {
-			winedebug += ",+loaddll"
-			//winedebug += ",+imports"
-			winedebug += ",+module"
-		}
-		cmd := exec.Command(filepath.Join(*Prefix, "bin", "wine"), "wineboot", "--init")
-		cmd.Env = append(slices.Clone(wineEnv), "WINEDEBUG="+winedebug)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stdout
-		// TODO: filter out expected err:winediag:nodrv_CreateWindow, err:vulkan:vulkan_init_once, err:win:get_desktop_window
-		if err := cmd.Run(); err != nil {
-			return err
-		}
-		// TODO: fix failure only on -optimize amd64
-		// something to do with https://github.com/wine-mirror/wine/blob/22af42ac22279e6c0c671f033661f95c1761b4bb/dlls/ntdll/unix/env.c#L1952-L1964
-		// there's an i386 binary somewhere getting called by wine.inf, causing wine to try and use the wow64 loader, which we deleted earlier
-	}
-
 	slog.Info("disabling automatic wineprefix updates")
 	if err := os.WriteFile(filepath.Join(*Output, ".update-timestamp"), []byte("disable\n"), 0644); err != nil {
 		return err
 	}
 
-	if *Optimize {
-		// TODO: clean up empty dirs
-	}
-
-	// TODO: replace duplicated files in the prefix with symlinks
-	// TODO: set some registry keys required for nswrap
-
-	// TODO: ensure we have some must-have dlls for northstar
-
-	if *Vendor {
-		// TODO: copy non-libc libraries into our lib dir
-		// TODO: ensure we have some libs we know we need
-	}
-
-	// TODO: remove this
-	filepath.WalkDir(*Prefix, func(path string, d fs.DirEntry, err error) error {
-		slog.Debug("wine file", "path", path)
-		return nil
-	})
-	filepath.WalkDir(*Output, func(path string, d fs.DirEntry, err error) error {
-		slog.Debug("wineprefix file", "path", path)
-		return nil
-	})
-
-	// TODO: replace this with a go impl
-	if tmp, err := exec.Command("du", "-sh", *Prefix).Output(); err == nil {
-		slog.Info(string(bytes.TrimSpace(tmp)))
-	}
-	if tmp, err := exec.Command("du", "-sh", *Output).Output(); err == nil {
-		slog.Info(string(bytes.TrimSpace(tmp)))
-	}
-
-	return errors.ErrUnsupported
+	return nil
 }

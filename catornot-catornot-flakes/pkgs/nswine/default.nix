@@ -9,17 +9,13 @@
   lib,
 }:
 let
-  wine-ns = wine64Packages.staging_11;
+  wine-ns = wine64Packages.stable;
   nswine = buildGoModule {
     pname = "nswine";
     version = "1.0.0";
     src = ../../pg9182-nsdockerwine2/nswine;
 
     vendorHash = "sha256-8B1nbk0ZaYEuujSsdF+KgXFimQdj8JAujQj0af6ECfM=";
-
-    patches = [
-      ./remove_extra.patch
-    ];
   };
   patchthething =
     writers.writeRustBin "nswine-run" { } # rust
@@ -68,7 +64,6 @@ stdenvNoCC.mkDerivation {
   src = ./.;
 
   nativeBuildInputs = [
-    # wine64
     nswine
     unixtools.xxd
     hexdump
