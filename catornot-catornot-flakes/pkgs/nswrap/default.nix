@@ -4,23 +4,12 @@
   glibc,
   libunwind,
   libgnurl,
-  applyPatches,
-  doNotPatch ? false,
 }:
 stdenv.mkDerivation {
   pname = "nswrap";
   version = "1.0.0";
 
-  src = applyPatches {
-    src = ../../pg9182-nsdockerwine2;
-    patches =
-      if doNotPatch then
-        [ ]
-      else
-        [
-          ./nswrap.patch
-        ];
-  };
+  src = ../../pg9182-nsdockerwine2;
 
   nativeBuildInputs = [
   ];

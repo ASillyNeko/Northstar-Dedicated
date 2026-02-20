@@ -42,11 +42,3 @@ stdenvNoCC.mkDerivation {
       ${lib.getExe' nswine wine-name} wineboot --kill --force
   ";
 }
-
-# makeWrapper $out/bin/wine64 \
-#   --suffix PATH : ${
-#   lib.makeBinPath [
-#     xdg-utils
-#     xvfb-run
-#   ]
-# }

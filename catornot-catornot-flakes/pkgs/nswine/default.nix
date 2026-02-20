@@ -15,7 +15,7 @@ let
     version = "1.0.0";
     src = ../../pg9182-nsdockerwine2/nswine;
 
-    vendorHash = "sha256-8B1nbk0ZaYEuujSsdF+KgXFimQdj8JAujQj0af6ECfM=";
+    vendorHash = "sha256-RFOeqr9hvj/WWY19solDAMhajzqtQ82+2SDw5ce6zhI=";
   };
   patchthething =
     writers.writeRustBin "nswine-run" { } # rust
@@ -96,11 +96,3 @@ stdenvNoCC.mkDerivation {
       ! diff ${wine-ns}/share/wine/wine.inf $out/share/wine/wine.inf
   ";
 }
-
-# makeWrapper $out/bin/wine64 \
-#   --suffix PATH : ${
-#   lib.makeBinPath [
-#     xdg-utils
-#     xvfb-run
-#   ]
-# }

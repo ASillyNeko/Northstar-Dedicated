@@ -24,10 +24,10 @@ RUN . /northstar_version.sh && \
 WORKDIR /build
 
 COPY catornot-catornot-flakes/ ./catornot-catornot-flakes
+
 COPY catornot-catornot-flakes/ /catornot-catornot-flakes
 
-RUN nix-env -iA nixpkgs.gnused nixpkgs.gawk && \
-	nix build ./catornot-catornot-flakes#nswine-env && \
+RUN nix build ./catornot-catornot-flakes#nswine-env && \
 	nix-collect-garbage -d
 
 RUN nix build ./catornot-catornot-flakes#nswine && \
