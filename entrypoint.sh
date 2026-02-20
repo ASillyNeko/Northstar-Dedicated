@@ -13,7 +13,7 @@ fi
 mkdir $TMP_DIR
 
 if [ ! -d "$TF2_DIR/" ]; then
-	echo "TF2 doesn't exist or is not a directory."
+	echo "TF2 directory doesn't exist or is not a directory."
 	exit 1
 fi
 
@@ -23,7 +23,7 @@ if [ -n "$(find "$TF2_DIR" -maxdepth 0 -empty)" ]; then
 fi
 
 if [ ! -d "$NORTHSTAR_DIR/" ]; then
-	echo "Northstar doesn't exist or is not a directory."
+	echo "Northstar directory doesn't exist or is not a directory."
 	exit 1
 fi
 
@@ -59,12 +59,15 @@ done
 if [ -d "$MODS_DIR" ]; then
 	for mod in "$MODS_DIR"/*/; do
 		[ -d "$mod" ] || continue
+
 		mod_name=$(basename "$mod")
 		target="$TMP_DIR/R2Northstar/mods/$mod_name"
+
 		if [ -e "$target" ] || [ -L "$target" ]; then
-			echo "Error: cannot overwrite built-in mod, '$mod_name'"
+			echo "Error: cannot overwrite built-in mod/file, '$mod_name'"
 			exit 1
 		fi
+
 		ln -sf "$mod" "$target"
 	done
 fi
