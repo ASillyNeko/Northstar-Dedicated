@@ -46,3 +46,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/northstar-dedicated.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: docker-image
+          path: /tmp/northstar-dedicated.tar
