@@ -1,0 +1,146 @@
+diff --git a/nswrap/nswrap.c b/nswrap/nswrap.c
+index 9c700d1081c..d66d9224a80 100644
+--- a/nswrap/nswrap.c
++++ b/nswrap/nswrap.c
+@@ -30,26 +30,25 @@
+  *     - ansi escape filtering
+  *     - proper stdin handling (buffering, tty, etc)
+  *   - env var filtering
+- *   - process monitoring
+- *   - cleanup
++ *   - process monitoring*   - cleanup
+  *
+  * To test this without a patched wine build (it still must be >= wine-9.0), do something like the following:
+  * - gcc -Wall -Wextra nswrap.c -o nswrap
+- * - unset DISPLAY WAYLAND_DISPLAY
++ * - unset DISPLAY WAYLAN_DISPLAY
+  * - export WINEARCH=win64 WINEDLLOVERRIDES="mscoree,mshtml,winemenubuilder.exe="
+  * - export WINEPREFIX=/tmp/whatever/wineprefix/path
+  * - rm -rf $WINEPREFIX
+- * - wine64 wineboot --init
+- * - wine64 reg add 'HKCU\Software\Wine' /v 'Version' /t REG_SZ /d 'win10' /f
+- * - wine64 reg add 'HKCU\Software\Wine\Drivers' /v 'Audio' /t REG_SZ /d '' /f
+- * - wine64 reg add 'HKCU\Software\Wine\WineDbg' /v 'ShowCrashDialog' /t REG_DWORD /d 0 /f
+- * - wine64 reg add 'HKCU\Software\Wine\Drivers' /v 'Graphics' /t REG_SZ /d 'null' /f
+- * - wine64 reg add 'HKCU\Software\Wine\DllOverrides' /v 'mscoree' /t REG_SZ /d '' /f
+- * - wine64 reg add 'HKCU\Software\Wine\DllOverrides' /v 'mshtml' /t REG_SZ /d '' /f
+- * - wine64 reg add 'HKCU\Software\Wine\DllOverrides' /v 'winemenubuilder' /t REG_SZ /d '' /f
+- * - wine64 reg add 'HKCU\Software\Wine\DllOverrides' /v 'd3d11' /t REG_SZ /d 'native' /f
+- * - wine64 wineboot --shutdown --force
+- * - wine64 wineboot --kill --force
++ * - wine wineboot --init
++ * - wine reg add 'HKCU\Software\Wine' /v 'Version' /t REG_SZ /d 'win10' /f
++ * - wine reg add 'HKCU\Software\Wine\Drivers' /v 'Audio' /t REG_SZ /d '' /f
++ * - wine reg add 'HKCU\Software\Wine\WineDbg' /v 'ShowCrashDialog' /t REG_DWORD /d 0 /f
++ * - wine reg add 'HKCU\Software\Wine\Drivers' /v 'Graphics' /t REG_SZ /d 'null' /f
++ * - wine reg add 'HKCU\Software\Wine\DllOverrides' /v 'mscoree' /t REG_SZ /d '' /f
++ * - wine reg add 'HKCU\Software\Wine\DllOverrides' /v 'mshtml' /t REG_SZ /d '' /f
++ * - wine reg add 'HKCU\Software\Wine\DllOverrides' /v 'winemenubuilder' /t REG_SZ /d '' /f
++ * - wine reg add 'HKCU\Software\Wine\DllOverrides' /v 'd3d11' /t REG_SZ /d 'native' /f
++ * - wine wineboot --shutdown --force
++ * - wine wineboot --kill --force
+  * - export NSWRAP_DEBUG=1 NSWRAP_EXTWINE=1 NSWRAP_RUNTIME=$PWD
+  * - env -C /path/to/northstar ./nswrap -dedicated ...
+  */
+@@ -856,14 +855,9 @@ int main(int argc, char **argv) {
+         }
+         if (!state.cfg.extwine) {
+             char tmp[sizeof(state.cfg.dir)*2];
+-            snprintf(tmp, sizeof(tmp), "%s/bin/wine64", state.cfg.dir);
++            snprintf(tmp, sizeof(tmp), "%s/bin/wine", state.cfg.dir);
+             if (access(tmp, R_OK|X_OK) == -1) {
+-                NSLOG_ERRNO("runtime dir must contain wine executable 'bin/wine64' (%s) unless NSWRAP_EXTWINE is set", tmp);
+-                goto cleanup;
+-            }
+-            snprintf(tmp, sizeof(tmp), "%s/bin/wine64-preloader", state.cfg.dir);
+-            if (access(tmp, R_OK|X_OK) == -1) {
+-                NSLOG_ERRNO("runtime dir must contain wine executable 'bin/wine64-preloader' (%s) unless NSWRAP_EXTWINE is set", tmp);
++                NSLOG_ERRNO("runtime dir must contain wine executable 'bin/wine' (%s) unless NSWRAP_EXTWINE is set", tmp);
+                 goto cleanup;
+             }
+             snprintf(tmp, sizeof(tmp), "%s/bin/wineserver", state.cfg.dir);
+@@ -871,14 +865,14 @@ int main(int argc, char **argv) {
+                 NSLOG_ERRNO("runtime dir must contain wine executable 'bin/wineserver' (%s) unless NSWRAP_EXTWINE is set", tmp);
+                 goto cleanup;
+             }
+-            snprintf(tmp, sizeof(tmp), "%s/lib64/wine/x86_64-unix", state.cfg.dir);
++            snprintf(tmp, sizeof(tmp), "%s/lib/wine/x86_64-unix", state.cfg.dir);
+             if (access(tmp, R_OK|X_OK) == -1) {
+-                NSLOG_ERRNO("runtime dir must contain wine lib dir 'lib64/wine/x86_64-unix' (%s) unless NSWRAP_EXTWINE is set", tmp);
++                NSLOG_ERRNO("runtime dir must contain wine lib dir 'lib/wine/x86_64-unix' (%s) unless NSWRAP_EXTWINE is set", tmp);
+                 goto cleanup;
+             }
+-            snprintf(tmp, sizeof(tmp), "%s/lib64/wine/x86_64-windows", state.cfg.dir);
++            snprintf(tmp, sizeof(tmp), "%s/lib/wine/x86_64-windows", state.cfg.dir);
+             if (access(tmp, R_OK|X_OK) == -1) {
+-                NSLOG_ERRNO("runtime dir must contain wine lib dir 'lib64/wine/x86_64-windows' (%s) unless NSWRAP_EXTWINE is set", tmp);
++                NSLOG_ERRNO("runtime dir must contain wine lib dir 'lib/wine/x86_64-windows' (%s) unless NSWRAP_EXTWINE is set", tmp);
+                 goto cleanup;
+             }
+             snprintf(tmp, sizeof(tmp), "%s/prefix", state.cfg.dir);
+@@ -933,7 +927,7 @@ int main(int argc, char **argv) {
+             (state.cfg.istty && NSWRAP_IOPROC_COLOR) ? "" : " (but not from northstar)");
+         NSLOG_INF("- %s update process name (instance label: %s)",
+             state.cfg.setproctitle ? "will" : "will not", state.cfg.setproctitle_extra ?: "none");
+-        NSLOG_INF("- using %s wine64", state.cfg.extwine ? "external" : "built-in");
++        NSLOG_INF("- using %s wine", state.cfg.extwine ? "external" : "built-in");
+         NSLOG_INF("- using watchdog initial=%ds interval=%ds no_exit=%s", NSWRAP_WATCHDOG_TIMEOUT_INITIAL, NSWRAP_WATCHDOG_TIMEOUT, state.cfg.nowatchdogquit ? "yes" : "no");
+         NSLOG_INF("- using watchdog title regexp: %s", NSWRAP_STATUS_RE_REGEXP);
+         NSLOG_INF("");
+@@ -1092,7 +1086,7 @@ int main(int argc, char **argv) {
+         char *wine_exe, *wine_argv[512], *wine_envp[512];
+ 
+         i=0;
+-        wine_argv[i++] = strdup("wine64");
++        wine_argv[i++] = strdup("wine");
+         wine_argv[i++] = strdup("NorthstarLauncher.exe");
+         for (int j = 1; j < argc; j++) {
+             /* first argument is -dedicated */
+@@ -1109,9 +1103,6 @@ int main(int argc, char **argv) {
+         wine_argv[i++] = NULL;
+ 
+         i=0;
+-        wine_envp[i++] = strdup("USER=nswrap");
+-        wine_envp[i++] = strdup("HOSTNAME=none");
+-        wine_envp[i++] = strdup(getenve("HOME") ?: "HOME=/");
+         wine_envp[i++] = strdup(getenve("WINEDEBUG") ?: "WINEDEBUG=+msgbox,fixme-secur32,fixme-bcrypt,fixme-ver,err-wldap32,err-kerberos,err-ntlm");
+         wine_envp[i++] = strdup("WINEARCH=win64");
+         if (state.cfg.extwine) {
+@@ -1125,28 +1116,29 @@ int main(int argc, char **argv) {
+             if (getenve("WINESERVER")) wine_envp[i++] = strdup(getenve("WINESERVER"));
+             if (getenve("WINELOADER")) wine_envp[i++] = strdup(getenve("WINELOADER"));
+             if (getenve("WINEDLLPATH")) wine_envp[i++] = strdup(getenve("WINEDLLPATH"));
+-            wine_exe = strdup("wine64");
++            wine_exe = strdup("wine");
++            NSLOG_DBG("wine ", wine_exe);
+         } else {
+             #define BINEXTRA ""
+             char tmp[sizeof(state.cfg.dir)*2];
+             snprintf(tmp, sizeof(tmp), "PATH=%s/bin%s:/usr/bin", state.cfg.dir, BINEXTRA);
+-            wine_envp[i++] = strdup(tmp);
++            wine_envp[i++] =strdup(tmp);
+             #ifndef __aarch64__
+-            snprintf(tmp, sizeof(tmp), "LD_LIBRARY_PATH=%s/lib64", state.cfg.dir);
++            snprintf(tmp, sizeof(tmp), "LD_LIBRARY_PATH=%s/lib", state.cfg.dir);
+             wine_envp[i++] = strdup(tmp);
+             #endif
+-            snprintf(tmp, sizeof(tmp), "WINEPREFIX=%s/prefix", state.cfg.dir);
++            snprintf(tmp, sizeof(tmp), "WEPREFIX=%s/prefix", state.cfg.dir);
+             wine_envp[i++] = strdup(tmp);
+             snprintf(tmp, sizeof(tmp), "WINESERVER=%s/bin%s/wineserver", state.cfg.dir, BINEXTRA);
+             wine_envp[i++] = strdup(tmp);
+-            snprintf(tmp, sizeof(tmp), "WINELOADER=%s/bin%s/wine64", state.cfg.dir, BINEXTRA);
+-            wine_envp[i++] = strdup(tmp);
+-            snprintf(tmp, sizeof(tmp), "WINEDLLPATH=%s/lib64/wine", state.cfg.dir); // note: wine searches the x86_64-windows, x86_64-unix subdirs too
++            snprintf(tmp, sizeof(tmp), "WINELOADER=%s/bin%s/wine", state.cfg.dir, BINEXTRA);
++            wine_envp[i++] = strdup(tmp);            snprintf(tmp, sizeof(tmp), "WINEDLLPATH=%s/lib/wine", state.cfg.dir); // note: wine searches the x86_64-windows, x86_64-unix subdirs too
+             wine_envp[i++] = strdup(tmp);
+-            snprintf(tmp, sizeof(tmp), "%s/bin%s/wine64", state.cfg.dir, BINEXTRA);
++            snprintf(tmp, sizeof(tmp), "%s/bin%s/wine", state.cfg.dir, BINEXTRA);
+             wine_exe = strdup(tmp);
+             #undef BINEXTRA
+         }
++        NSLOG_DBG("wine %s", wine_exe);
+         if (getenve("WINDELLOVERRIDES")) wine_envp[i++] = strdup(getenve("WINDELLOVERRIDES"));
+         wine_envp[i++] = NULL;
+ 
