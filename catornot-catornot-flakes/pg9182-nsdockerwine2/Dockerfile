@@ -4,14 +4,14 @@
 ARG GO="1.26.0"
 
 # wine version
-ARG WINE="11.2"
+ARG WINE="11.0"
 
 # hangover version
 ARG HANGOVER="1"
 
 # debian version
 ARG DEBIAN="13"
-ARG DEBIAN_CODENAME="bookworm"
+ARG DEBIAN_CODENAME="trixie"
 
 # nswine options
 ARG NSWINEOPT="-optimize -vendor -debug"

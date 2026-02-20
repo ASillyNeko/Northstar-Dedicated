@@ -12,25 +12,30 @@ x-logging:
       max-size: "400m"
 
 services:
-  northstar:
+  Northstar:
     << : *logging
+    container_name: Northstar
     image: ghcr.io/asillyneko/northstar-dedicated:latest
     network_mode: host # DO NOT REMOVE
     environment:
       - NS_PORT=37015
-      - SYMLINK_FILES=1 # Keep this at 1 if you want to save disk space but you risk getting Data Execution Prevention (DEP) crashes if multiple servers use the same directory
-      - NSWRAP_NOWATCHDOGQUIT=0 # Set this to 1 if your server has ns_report_server_to_masterserver 0 or is a singleplayer with ns_report_sp_server_to_masterserver 0
+      - NSWRAP_NOWATCHDOGQUIT=0
       - |
         NS_EXTRA_ARGUMENTS=
         +ns_server_name "Unnamed Northstar Docker Server"
         +ns_server_desc ""
+        -nopakdedi
     volumes:
-      - /home/neko/northstar/titanfall2-files:/titanfall2
-      # Example ways to mount northstar/mods:
-      # - /home/neko/northstar/Attrition-Extended-Recode:/northstar # Replaces files in northstar with ones in that directory
-      # - /home/neko/northstar/Attrition-Extended-Recode-Mods:/northstar/R2Northstar/mods # Replaces files only in mods folder with ones in that directory
-      # - /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/northstar/R2Northstar/mods/Nekos.Attrition.Extended.Recode # Adds this mod
+      - /home/neko/northstar/titanfall2-files:/titanfall2:ro
     restart: always
 ```
 
-If You Want To Edit The `R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg` Use The `autoexec_ns_server.cfg.bak` Version Not `autoexec_ns_server.cfg` As It Gets Overwritten
+# Configuration
+
+`NSWRAP_NOWATCHDOGQUIT` Set this to 1 if your server has `ns_report_server_to_masterserver 0` or is a singleplayer with `ns_report_sp_server_to_masterserver 0`
+
+Example ways to mount custom northstar install and mods `volumes`
+
+- `/home/neko/northstar/Attrition-Extended-Recode:/northstar` Replaces files in northstar with ones in that directory, DO NOT ADD `:ro` as `:ro` makes the volume read only and northstar needs to make a log file.
+- `/home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory.
+- `/home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod.

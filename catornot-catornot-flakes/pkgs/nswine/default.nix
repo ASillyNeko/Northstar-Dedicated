@@ -13,14 +13,7 @@ let
   nswine = buildGoModule {
     pname = "nswine";
     version = "1.0.0";
-    src = "${
-      fetchFromGitHub {
-        owner = "pg9182";
-        repo = "nsdockerwine2";
-        rev = "c412fb15ef20ebb6ba674796ac527a558942772a";
-        sha256 = "sha256-Y0oDQYUnsChdRyId73paTTgJ2k5n0Y3Cn1Y2TeHdwDo=";
-      }
-    }/nswine";
+    src = ../../pg9182-nsdockerwine2/nswine;
 
     vendorHash = "sha256-8B1nbk0ZaYEuujSsdF+KgXFimQdj8JAujQj0af6ECfM=";
 
