@@ -94,6 +94,4 @@ if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
 	NS_EXTRA_ONELINE=$(printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ')
 fi
 
-CMD="nix shell /catornot-catornot-flakes#nswine --impure --command nix run /catornot-catornot-flakes#nswrap --impure -- -dedicated -port \"$PORT\" $NS_EXTRA_ONELINE"
-
-exec sh -c "$CMD"
+exec nix shell /catornot-catornot-flakes#nswine --impure --command nix run /catornot-catornot-flakes#nswrap --impure -- -dedicated -port $PORT $NS_EXTRA_ONELINE

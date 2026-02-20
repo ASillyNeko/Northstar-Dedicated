@@ -1,9 +1,5 @@
 {
   stdenv,
-  fetchFromGitHub,
-  glibc,
-  libunwind,
-  libgnurl,
 }:
 stdenv.mkDerivation {
   pname = "nswrap";
@@ -14,9 +10,6 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
   ];
   buildInputs = [
-    glibc
-    libunwind
-    libgnurl
   ];
 
   buildPhase = ''

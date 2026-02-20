@@ -1,10 +1,8 @@
 {
   stdenvNoCC,
   wine64Packages,
-  fetchFromGitHub,
   buildGoModule,
   unixtools,
-  hexdump,
   writers,
   lib,
 }:
@@ -66,7 +64,6 @@ stdenvNoCC.mkDerivation {
   nativeBuildInputs = [
     nswine
     unixtools.xxd
-    hexdump
   ];
   buildInputs = [
   ];
