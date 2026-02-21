@@ -4,6 +4,7 @@ set -e
 TF2_DIR=/titanfall2
 NORTHSTAR_DIR=/northstar
 MODS_DIR=/mnt/mods
+PLUGINS_DIR=/mnt/plugins
 TMP_DIR=/tmp/northstar
 
 if [ -d "$TMP_DIR/" ]; then
@@ -28,7 +29,7 @@ if [ ! -d "$NORTHSTAR_DIR/" ]; then
 fi
 
 if [ -n "$(find "$NORTHSTAR_DIR" -maxdepth 0 -empty)" ]; then
-	echo "TF2 directory is empty"
+	echo "Northstar directory is empty"
 	exit 1
 fi
 
@@ -72,19 +73,30 @@ if [ -d "$MODS_DIR" ]; then
 	done
 fi
 
+if [ -d "$PLUGINS_DIR" ]; then
+	for plugin in "$PLUGINS_DIR"/*; do
+		[ -f "$plugin" ] || continue
+
+		plugin_name=$(basename "$plugin")
+		target="$TMP_DIR/R2Northstar/plugins/$plugin_name"
+
+		if [ -e "$target" ] || [ -L "$target" ]; then
+			echo "Error: cannot overwrite built-in plugin/file, '$plugin_name'"
+			exit 1
+		fi
+
+		ln -sf "$plugin" "$target"
+	done
+fi
+
 cd "$TMP_DIR"
 
 PORT=${NS_PORT:-37015}
 TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
-BACKUP_CFG="$TARGET_CFG.bak"
-
-if [ -f "$BACKUP_CFG" ]; then
-	cp "$BACKUP_CFG" "$TARGET_CFG"
-else
-	cp "$TARGET_CFG" "$BACKUP_CFG"
-fi
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
+	cp --remove-destination "$(realpath "$TARGET_CFG")" "$TARGET_CFG"
+
 	printf '%s\n' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^[+-]' | while read -r arg; do
 		key=$(printf '%s' "$arg" | sed 's/^[+-]//' | awk '{print $1}')
 		[ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"
