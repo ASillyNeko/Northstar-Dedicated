@@ -3,7 +3,7 @@ name: Build and Release Docker Image
 on:
   push:
     branches: [ "main" ]
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
+    paths: [ '.github/workflows/build_and_release.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_dispatch:
 
 env:

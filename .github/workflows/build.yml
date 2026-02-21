@@ -3,9 +3,9 @@ name: Build Docker Image
 on:
   push:
     branches-ignore: [ "main" ]
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
+    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
+    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_dispatch:
 
 env:
