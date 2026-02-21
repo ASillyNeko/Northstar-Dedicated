@@ -33,9 +33,30 @@ services:
     restart: always
 ```
 
+## Titanfall 2
+You can use a normal Titanfall 2 install or you can shrink the Titanfall 2 install
+
+### Reducing Titanfall 2 size
+
+[!WARNING]
+ONLY DO THIS FOR NORTHSTAR-DEDICATED DO NOT DO THIS FOR YOUR ACTUAL TITANFALL 2 INSTALL
+
+Normal size 70.6GB
+
+- delete `r2/paks/Win64/pc_*` (40.0GB)
+- delete `vpk/client_sp_*` and `vpk/englishclient_sp_*` (12.2GB)
+- delete `r2/sound/**` (5.1GB)
+- delete `r2/paks/Win64/mp_*` (1.8GB)
+- delete `r2/paks/Win64/sp_*` (1.7GB)
+- delete `r2/maps/**` (1.5GB)
+- delete `r2/media/**` (1.1GB)
+- delete `__Installer/` (354MB)
+- delete `Core/` (43MB)
+- delete `bin/x64_retail/client.dll` (13MB)
+
 ## Configuration
 
-Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masterserver 0` or is a singleplayer with `ns_report_sp_server_to_masterserver 0`
+Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masterserver 0`
 
 ### How to mount custom northstar install, mods, plugins, and save data of mods `volumes`
 
