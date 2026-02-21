@@ -98,7 +98,7 @@ Normal size 70.6GB
 
 - delete `r2/paks/Win64/pc_*` (40.0GB)
 - delete `vpk/client_sp_*` and `vpk/englishclient_sp_*` (12.2GB)
-- delete `r2/sound/**` (5.1GB)
+- delete `r2/sound/general*` (5.1GB)
 - delete `r2/paks/Win64/mp_*` (1.8GB)
 - delete `r2/paks/Win64/sp_*` (1.7GB)
 - delete `r2/maps/*` (1.5GB)
