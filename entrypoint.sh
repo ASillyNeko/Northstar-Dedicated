@@ -93,7 +93,7 @@ fi
 
 cd "$TMP_DIR"
 
-PORT=${NS_PORT:-37015}
+PORT=${NS_PORT:-37016}
 TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
