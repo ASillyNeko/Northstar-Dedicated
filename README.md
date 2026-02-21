@@ -27,31 +27,34 @@ services:
         -nopakdedi
     volumes:
       - /home/neko/northstar/titanfall2-files:/titanfall2:ro
+      - /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro
+      - /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro
+      - /home/neko/northstar/Attrition-Extended-Recode-Data:/northstar/R2Northstar/save_data
     restart: always
 ```
 
-# Configuration
+## Configuration
 
 Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masterserver 0` or is a singleplayer with `ns_report_sp_server_to_masterserver 0`
 
-**Example ways to mount custom northstar install, mods, plugins, and save data of mods `volumes`**
+### How to mount custom northstar install, mods, plugins, and save data of mods `volumes`
 
-**CUSTOM NORTHSTAR INSTALL**
+### Custom northstar install
 
 - `- /home/neko/northstar/Attrition-Extended-Recode:/northstar` Replaces files in northstar with ones in that directory, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make a log file.
 
-**MODS**
+### Mods
 
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods.
 
-**PLUGINS**
+### Plugins
 
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro` Adds all the plugins in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins/bp-ort.dll:ro` Adds this plugin.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins.
 
-**SAVE DATA**
+### Save data
 
 - `- /home/neko/northstar/Attrition-Extended-Recode-Data:/northstar/R2Northstar/save_data` Reads and writes save data for mods, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make files for mods here
