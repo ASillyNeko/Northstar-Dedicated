@@ -32,7 +32,7 @@ services:
 
 # Configuration
 
-`NSWRAP_NOWATCHDOGQUIT` Set to 1 if your server has `ns_report_server_to_masterserver 0` or is a singleplayer with `ns_report_sp_server_to_masterserver 0`
+Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masterserver 0` or is a singleplayer with `ns_report_sp_server_to_masterserver 0`
 
 **Example ways to mount custom northstar install, mods, plugins, and save data of mods `volumes`**
 
