@@ -44,11 +44,13 @@ Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masters
 
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod.
+- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods.
 
 **PLUGINS**
 
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro` Adds all the plugins in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins/bp-ort.dll:ro` Adds this plugin.
+- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins.
 
 **SAVE DATA**
 

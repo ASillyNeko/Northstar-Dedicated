@@ -66,6 +66,7 @@ if [ -d "$MODS_DIR" ]; then
 
 		if [ -e "$target" ] || [ -L "$target" ]; then
 			echo "Error: cannot overwrite built-in mod/file, '$mod_name'"
+			echo "Change your volume to '/northstar/R2Northstar/mods:ro' if you want to overwrite built-in mods/files"
 			exit 1
 		fi
 
@@ -82,6 +83,7 @@ if [ -d "$PLUGINS_DIR" ]; then
 
 		if [ -e "$target" ] || [ -L "$target" ]; then
 			echo "Error: cannot overwrite built-in plugin/file, '$plugin_name'"
+			echo "Change your volume to '/northstar/R2Northstar/plugins:ro' if you want to overwrite built-in plugins/files"
 			exit 1
 		fi
 
