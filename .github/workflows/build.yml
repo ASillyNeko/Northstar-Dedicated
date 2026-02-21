@@ -5,6 +5,7 @@ on:
     branches-ignore: [ "main" ]
     paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
   pull_request:
+    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
   workflow_dispatch:
 
 env:
