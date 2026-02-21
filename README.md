@@ -38,8 +38,8 @@ You can use a normal Titanfall 2 install or you can shrink the Titanfall 2 insta
 
 ### Reducing Titanfall 2 size
 
-[!WARNING]
-ONLY DO THIS FOR NORTHSTAR-DEDICATED DO NOT DO THIS FOR YOUR ACTUAL TITANFALL 2 INSTALL
+> [!WARNING]
+> ONLY DO THIS FOR NORTHSTAR-DEDICATED DO NOT DO THIS FOR YOUR ACTUAL TITANFALL 2 INSTALL
 
 Normal size 70.6GB
 
