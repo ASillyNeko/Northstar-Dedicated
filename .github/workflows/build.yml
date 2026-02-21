@@ -3,8 +3,9 @@ name: Build Docker Image
 on:
   push:
     branches-ignore: [ "main" ]
-    paths: [ 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh' ]
+    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
+    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_dispatch:
 
 env:
@@ -24,6 +25,9 @@ jobs:
       - name: Get Northstar Version
         run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -41,3 +45,12 @@ jobs:
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/northstar-dedicated.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: northstar-dedicated
+          path: /tmp/northstar-dedicated.tar
