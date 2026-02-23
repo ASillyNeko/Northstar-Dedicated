@@ -78,7 +78,6 @@ services:
         +sv_updaterate_mp 60
         +sv_minupdaterate 60
         +sv_max_snapshots_multiplayer 900
-        +ns_auth_allow_insecure 1
         -enablechathooks
         -allowlocalhttp
         -multiple
