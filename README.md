@@ -16,6 +16,8 @@ services:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
     network_mode: host # DO NOT REMOVE
+    tty: true
+    stdin_open: true
     environment:
       - NS_PORT=37016
       - NSWRAP_NOWATCHDOGQUIT=0
@@ -45,6 +47,8 @@ services:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
     network_mode: host # DO NOT REMOVE
+    tty: true
+    stdin_open: true
     environment:
       - NS_PORT=37016
       - NSWRAP_NOWATCHDOGQUIT=0
