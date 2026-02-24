@@ -102,7 +102,7 @@ Normal size 70.6GB
 - delete `r2/paks/Win64/pc_*` (40.0GB)
 - delete `vpk/client_sp_*` and `vpk/englishclient_sp_*` (12.2GB)
 - delete `r2/sound/general*` (5.1GB)
-- delete `r2/paks/Win64/mp_*` (1.8GB)
+- with `-nopakdedi` delete `r2/paks/Win64/mp_*` (1.8GB)
 - delete `r2/paks/Win64/sp_*` (1.7GB)
 - delete `r2/maps/*` (1.5GB)
 - delete `r2/media/*` (1.1GB)
@@ -111,7 +111,7 @@ Normal size 70.6GB
 - delete `Core/` (43MB)
 - delete `bin/x64_retail/client.dll` (13MB)
 
-New size 6.3GB
+New size 6.3GB with `-nopakdedi` 8.1GB without `-nopakdedi`
 
 ## Configuration
 You can change values of convars by doing `+convar_name "new value"` quotes aren't needed but if you have `//` in the new value it'll be cut off example
