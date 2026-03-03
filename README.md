@@ -12,7 +12,7 @@ x-logging:
       max-size: "400m"
 
 services:
-  Northstar-Dedicated:
+  northstar-dedicated:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
     network_mode: host # DO NOT REMOVE
@@ -43,7 +43,7 @@ x-logging:
       max-size: "400m"
 
 services:
-  Northstar-Dedicated:
+  northstar-dedicated:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
     network_mode: host # DO NOT REMOVE
