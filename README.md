@@ -27,7 +27,7 @@ services:
         +ns_server_desc "Example Server Desc"
         -nopakdedi
     volumes:
-      - /home/neko/northstar/titanfall2-files:/titanfall2:ro
+      - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
     restart: always
 ```
 
@@ -83,10 +83,10 @@ services:
         -multiple
         -nopakdedi
     volumes:
-      - /home/neko/northstar/titanfall2-files:/titanfall2:ro
+      - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro
-      - /home/neko/northstar/Attrition-Extended-Recode-Data:/northstar/R2Northstar/save_data
+      - /home/neko/northstar/Attrition-Extended-Recode-Data:/mnt/northstar/R2Northstar/save_data
     restart: always
 ```
 
@@ -99,7 +99,7 @@ You can use a normal Titanfall 2 install or you can shrink the Titanfall 2 insta
 
 Normal size 70.6GB
 
-For `-nopakdedi` you can delete `r2/paks/Win64/*`
+`-nopakdedi` can delete `r2/paks/Win64/*`
 
 - delete `r2/paks/Win64/pc_*` (40.0GB)
 - delete `vpk/client_sp_*` and `vpk/englishclient_sp_*` (12.2GB)
@@ -128,17 +128,17 @@ Set `NSWRAP_NOWATCHDOGQUIT` to 1 if your server has `ns_report_server_to_masters
 ### Volumes
 
 ### Custom northstar install
-- `- /home/neko/northstar/Attrition-Extended-Recode:/northstar` Replaces files in northstar with ones in that directory, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make a log file.
+- `- /home/neko/northstar/Attrition-Extended-Recode:/mnt/northstar` Replaces files in northstar with ones in that directory, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make a log file.
 
 ### Mods
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod.
-- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods.
+- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods.
 
 ### Plugins
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro` Adds all the plugins in this directory.
 - `- /home/neko/northstar/Attrition-Extended-Recode-Plugins/bp-ort.dll:/mnt/plugins/bp-ort.dll:ro` Adds this plugin.
-- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins.
+- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins.
 
 ### Save data
-- `- /home/neko/northstar/Attrition-Extended-Recode-Data:/northstar/R2Northstar/save_data` Reads and writes save data for mods, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make files for mods here
+- `- /home/neko/northstar/Attrition-Extended-Recode-Data:/mnt/northstar/R2Northstar/save_data` Reads and writes save data for mods, DO NOT ADD `:ro` as `:ro` makes this volume read only and northstar needs to make files for mods here

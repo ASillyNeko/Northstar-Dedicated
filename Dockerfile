@@ -5,7 +5,7 @@ ENV NSWRAP_EXTWINE=1
 
 WORKDIR /build
 
-RUN mkdir -p /wine/wine && mkdir -p /northstar
+RUN mkdir -p /wine/wine && mkdir -p /mnt/northstar
 
 RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils nixpkgs.gnused nixpkgs.gnugrep nixpkgs.gawk
 
@@ -27,7 +27,7 @@ RUN chmod +x /northstar_version.sh
 RUN . /northstar_version.sh && \
 		curl -L https://github.com/R2Northstar/Northstar/releases/download/${NORTHSTAR_VERSION}/Northstar.release.${NORTHSTAR_VERSION}.zip -o northstar.zip && \
 		sha256sum -c <(echo "${NORTHSTAR_GITHUB_SHA256SUM#sha256:}  northstar.zip") && \
-		unzip ./northstar.zip -d /northstar/ && \
+		unzip ./northstar.zip -d /mnt/northstar/ && \
 		rm ./northstar.zip && \
 		rm /northstar_version.sh
 
