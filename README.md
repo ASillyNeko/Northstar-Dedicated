@@ -15,6 +15,7 @@ services:
   northstar-dedicated:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
+    pull_policy: always
     network_mode: host # DO NOT REMOVE
     tty: true
     stdin_open: true
@@ -46,6 +47,7 @@ services:
   northstar-dedicated:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
+    pull_policy: always
     network_mode: host # DO NOT REMOVE
     tty: true
     stdin_open: true
