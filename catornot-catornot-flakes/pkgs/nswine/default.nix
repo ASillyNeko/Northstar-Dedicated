@@ -16,7 +16,7 @@ let
     vendorHash = "sha256-RFOeqr9hvj/WWY19solDAMhajzqtQ82+2SDw5ce6zhI=";
   };
   patchthething =
-    writers.writeRustBin "nswine-run" { } # rust
+    writers.writeRustBin "patchthething" { } # rust
       ''
         use std::path::PathBuf;
         use std::env;
