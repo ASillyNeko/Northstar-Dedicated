@@ -11,11 +11,12 @@ RUN nix-env -iA nixpkgs.curl nixpkgs.unzip nixpkgs.coreutils nixpkgs.gnused nixp
 
 COPY catornot-catornot-flakes/ ./catornot-catornot-flakes
 
-RUN echo -e "experimental-features = nix-command flakes\ndownload-buffer-size = 536870912" >> /etc/nix/nix.conf && \
-	nix-collect-garbage -d && \
-	nix build ./catornot-catornot-flakes#nswine --no-link && \
-	nix build ./catornot-catornot-flakes#nswrap --no-link && \
-	nix-store --optimise
+RUN echo -e "experimental-features = nix-command flakes\ndownload-buffer-size = 536870912\nauto-optimise-store = true" >> /etc/nix/nix.conf && \
+	nix build ./catornot-catornot-flakes#nswine -o nswine && \
+	nix build ./catornot-catornot-flakes#nswrap -o nswrap && \
+	nix-collect-garbage -d
+
+RUN rm -r ./catornot-catornot-flakes
 
 COPY northstar_version.sh ./northstar_version.sh
 
