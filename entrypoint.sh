@@ -174,6 +174,7 @@ TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_n
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
 	printf '%s\n' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^[+-]' | while read -r arg; do
 		key=$(printf '%s' "$arg" | sed 's/^[+-]//' | awk '{print $1}')
+
 		[ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"
 	done
 fi
