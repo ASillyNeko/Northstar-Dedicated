@@ -57,7 +57,8 @@ for file in "$NORTHSTAR_DIR/R2Northstar"/*; do
 	ln -sfn "$file" "$TMP_DIR/R2Northstar/$basename"
 done
 
-mkdir -p "$TMP_DIR/R2Northstar/mods"
+mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"
+cp "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 
 for file in "$NORTHSTAR_DIR/R2Northstar/mods"/*; do
 	[ -e "$file" ] || continue
@@ -69,8 +70,6 @@ for file in "$NORTHSTAR_DIR/R2Northstar/mods"/*; do
 	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/$basename"
 done
 
-mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers"
-
 for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers"/*; do
 	[ -e "$file" ] || continue
 
@@ -80,8 +79,6 @@ for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers"/*; do
 
 	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/$basename"
 done
-
-mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod"
 
 for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod"/*; do
 	[ -e "$file" ] || continue
@@ -93,8 +90,6 @@ for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod"/*; do
 	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/$basename"
 done
 
-mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"
-
 for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"/*; do
 	[ -e "$file" ] || continue
 
@@ -105,7 +100,6 @@ for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"/*;
 	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/$basename"
 done
 
-cp "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 mkdir -p "$TMP_DIR/R2Northstar/plugins"
 
 for file in "$NORTHSTAR_DIR/R2Northstar/plugins"/*; do
