@@ -145,7 +145,7 @@ if [ -d "$MODS_DIR" ]; then
 			exit 1
 		fi
 
-		ln -sf "$file" "$target"
+		ln -sfn "$file" "$target"
 	done
 fi
 
@@ -162,7 +162,7 @@ if [ -d "$PLUGINS_DIR" ]; then
 			exit 1
 		fi
 
-		ln -sf "$file" "$target"
+		ln -sfn "$file" "$target"
 	done
 fi
 
