@@ -8,10 +8,10 @@ PLUGINS_DIR=/mnt/plugins
 TMP_DIR=/tmp/northstar
 
 if [ -d "$TMP_DIR/" ]; then
-	rm -r $TMP_DIR
+	rm -r "$TMP_DIR"
 fi
 
-mkdir $TMP_DIR
+mkdir "$TMP_DIR"
 
 if [ ! -d "$TF2_DIR/" ]; then
 	echo "TF2 directory doesn't exist or is not a directory."
@@ -33,61 +33,142 @@ if [ -n "$(find "$NORTHSTAR_DIR" -maxdepth 0 -empty)" ]; then
 	exit 1
 fi
 
-find "$TF2_DIR" -type d | while read -r tf2_dir; do
-	rel_path="${tf2_dir#$TF2_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && mkdir -p "$TMP_DIR/$rel_path"
+for file in "$TF2_DIR"/* "$NORTHSTAR_DIR"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "R2Northstar" ] || continue
+	[ "$basename" != "bin" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/$basename"
 done
 
-find "$NORTHSTAR_DIR" -type d | while read -r ns_dir; do
-	rel_path="${ns_dir#$NORTHSTAR_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && mkdir -p "$TMP_DIR/$rel_path"
+mkdir -p "$TMP_DIR/R2Northstar"
+
+for file in "$NORTHSTAR_DIR/R2Northstar"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "mods" ] || continue
+	[ "$basename" != "plugins" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/$basename"
 done
 
-find "$TF2_DIR" -type f -o -type l | while read -r tf2_file; do
-	rel_path="${tf2_file#$TF2_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && ln -sf "$tf2_file" "$TMP_DIR/$rel_path"
+mkdir -p "$TMP_DIR/R2Northstar/mods"
+
+for file in "$NORTHSTAR_DIR/R2Northstar/mods"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "Northstar.CustomServers" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/$basename"
 done
 
-find "$NORTHSTAR_DIR" -type f -o -type l | while read -r ns_file; do
-	rel_path="${ns_file#$NORTHSTAR_DIR}"
-	rel_path="${rel_path#/}"
-	[ -n "$rel_path" ] && ln -sf "$ns_file" "$TMP_DIR/$rel_path"
+mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers"
+
+for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "mod" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/$basename"
+done
+
+mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod"
+
+for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "cfg" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/$basename"
+done
+
+mkdir -p "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"
+
+for file in "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	[ "$basename" != "autoexec_ns_server.cfg" ] || continue
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/$basename"
+done
+
+cp "$NORTHSTAR_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg" "$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
+mkdir -p "$TMP_DIR/R2Northstar/plugins"
+
+for file in "$NORTHSTAR_DIR/R2Northstar/plugins"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	ln -sfn "$file" "$TMP_DIR/R2Northstar/plugins/$basename"
+done
+
+mkdir -p "$TMP_DIR/bin"
+
+for file in "$TF2_DIR/bin"/* "$NORTHSTAR_DIR/bin"/*; do
+	[ -e "$file" ] || continue
+
+	basename=$(basename "$file")
+
+	if [ -d "$file" ]; then
+		mkdir -p "$TMP_DIR/bin/$basename"
+
+		for otherfile in "$file"/*; do
+			[ -e "$otherfile" ] || continue
+
+			otherbasename=$(basename "$otherfile")
+
+			ln -sfn "$otherfile" "$TMP_DIR/bin/$basename/$otherbasename"
+		done
+	else
+		ln -sfn "$file" "$TMP_DIR/bin/$basename"
+	fi
 done
 
 if [ -d "$MODS_DIR" ]; then
-	for mod in "$MODS_DIR"/*/; do
-		[ -d "$mod" ] || continue
+	for file in "$MODS_DIR"/*/; do
+		[ -d "$file" ] || continue
 
-		mod_name=$(basename "$mod")
-		target="$TMP_DIR/R2Northstar/mods/$mod_name"
+		basename=$(basename "$file")
+		target="$TMP_DIR/R2Northstar/mods/$basename"
 
 		if [ -e "$target" ] || [ -L "$target" ]; then
-			echo "Error: cannot overwrite built-in mod/file, '$mod_name'"
+			echo "Error: cannot overwrite built-in mod/file, '$basename'"
 			echo "Change your volume to '$NORTHSTAR_DIR/R2Northstar/mods:ro' if you want to overwrite built-in mods/files"
 			exit 1
 		fi
 
-		ln -sf "$mod" "$target"
+		ln -sf "$file" "$target"
 	done
 fi
 
 if [ -d "$PLUGINS_DIR" ]; then
-	for plugin in "$PLUGINS_DIR"/*; do
-		[ -f "$plugin" ] || continue
+	for file in "$PLUGINS_DIR"/*; do
+		[ -f "$file" ] || continue
 
-		plugin_name=$(basename "$plugin")
-		target="$TMP_DIR/R2Northstar/plugins/$plugin_name"
+		basename=$(basename "$file")
+		target="$TMP_DIR/R2Northstar/plugins/$basename"
 
 		if [ -e "$target" ] || [ -L "$target" ]; then
-			echo "Error: cannot overwrite built-in plugin/file, '$plugin_name'"
+			echo "Error: cannot overwrite built-in plugin/file, '$basename'"
 			echo "Change your volume to '$NORTHSTAR_DIR/R2Northstar/plugins:ro' if you want to overwrite built-in plugins/files"
 			exit 1
 		fi
 
-		ln -sf "$plugin" "$target"
+		ln -sf "$file" "$target"
 	done
 fi
 
@@ -97,8 +178,6 @@ PORT=${NS_PORT:-37016}
 TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-	cp --remove-destination "$(realpath "$TARGET_CFG")" "$TARGET_CFG"
-
 	printf '%s\n' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^[+-]' | while read -r arg; do
 		key=$(printf '%s' "$arg" | sed 's/^[+-]//' | awk '{print $1}')
 		[ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"

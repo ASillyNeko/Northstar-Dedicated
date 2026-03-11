@@ -23,7 +23,7 @@ RUN chmod +x ./northstar_version.sh
 
 RUN . ./northstar_version.sh && \
 		curl -L https://github.com/R2Northstar/Northstar/releases/download/${NORTHSTAR_VERSION}/Northstar.release.${NORTHSTAR_VERSION}.zip -o northstar.zip && \
-		sha256sum -c <(echo "${NORTHSTAR_GITHUB_SHA256SUM#sha256:}  northstar.zip") && \
+		sha256sum -c <(echo "${NORTHSTAR_GITHUB_SHA256SUM#sha256:} northstar.zip") && \
 		unzip ./northstar.zip -d /mnt/northstar/ && \
 		rm ./northstar.zip && \
 		rm ./northstar_version.sh
