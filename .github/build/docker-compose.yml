@@ -10,7 +10,6 @@ services:
   northstar-dedicated:
     << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated:latest
-    pull_policy: missing
     network_mode: host # DO NOT REMOVE
     tty: true
     stdin_open: true
