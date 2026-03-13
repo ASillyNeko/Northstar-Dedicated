@@ -21,9 +21,8 @@ COPY catornot-catornot-flakes/ ./catornot-catornot-flakes
 RUN printf "experimental-features = nix-command flakes\ndownload-buffer-size = 536870912\nauto-optimise-store = true" >> /etc/nix/nix.conf && \
 	nix build ./catornot-catornot-flakes#nswine -o nswine && \
 	nix build ./catornot-catornot-flakes#nswrap -o nswrap && \
-	nix-collect-garbage -d
-
-RUN rm -r ./catornot-catornot-flakes
+	nix-collect-garbage -d && \
+	rm -r ./catornot-catornot-flakes
 
 COPY northstar_version.sh ./northstar_version.sh
 

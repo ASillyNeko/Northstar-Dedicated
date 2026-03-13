@@ -65,7 +65,7 @@ jobs:
           RCLONE_CONFIG_CLOUDFLARE_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
         run: |
           sudo apt-get update && sudo apt-get install rclone -y
-          rclone copy Cloudflare:titanfall2-files-github-actions ./github/build/titanfall2-files-github-actions
+          rclone copy Cloudflare:titanfall2-files-github-actions .github/build/titanfall2-files-github-actions
           docker compose -f .github/build/docker-compose.yml up -d
           timeout 60s python3 .github/build/wait_for_ping.py || ( echo "Failed, timed out."; docker compose -f .github/build/docker-compose.yml logs > /tmp/northstar_log.txt; docker compose kill; exit 1 )
           docker compose kill
