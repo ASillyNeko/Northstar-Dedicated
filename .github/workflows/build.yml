@@ -57,6 +57,7 @@ jobs:
           outputs: type=docker,dest=/tmp/northstar-dedicated.tar
 
       - name: Test Docker image
+        if: github.event_name != 'pull_request'
         env:
           RCLONE_CONFIG_CLOUDFLARE_TYPE: s3
           RCLONE_CONFIG_CLOUDFLARE_PROVIDER: Cloudflare
@@ -74,7 +75,7 @@ jobs:
           docker compose logs > /tmp/test-build-log.txt
 
       - name: Upload log file
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: test-build-log
