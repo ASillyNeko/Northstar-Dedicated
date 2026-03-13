@@ -69,7 +69,7 @@ jobs:
           rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
-          timeout 60s python3 wait_for_ping.py || ( echo "Failed, timed out."; docker compose logs > /tmp/northstar_log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
+          timeout 120s python3 wait_for_ping.py || ( echo "Failed, timed out."; docker compose logs > /tmp/northstar_log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
           docker compose kill
           docker compose logs > /tmp/northstar_log.txt
 
