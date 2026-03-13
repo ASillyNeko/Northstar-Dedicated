@@ -6,8 +6,8 @@ ENV NSWRAP_EXTWINE=1
 WORKDIR /home/northstar
 
 RUN apt update && \
-	apt upgrade -y && \
 	apt install curl xz-utils unzip -y && \
+	rm -rf /var/lib/apt/lists/* && \
 	curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install -o ./nix-install.sh && \
 	sh ./nix-install.sh --daemon --yes && \
 	rm ./nix-install.sh
