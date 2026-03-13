@@ -1,0 +1,16 @@
+{
+	"Name": "Neko's Northstar-Dedicated Test Build",
+	"Description": "",
+	"Version": "1.0.0",
+	"LoadPriority": 20,
+	"RequiredOnClient": false,
+	"Scripts": [
+		{
+			"Path": "test_build.nut",
+			"RunOn": "SERVER",
+			"ServerCallback": {
+				"After": "TestBuild_Init"
+			}
+		}
+	]
+}
