@@ -2,7 +2,6 @@ name: Build Docker Image
 
 on:
   push:
-    branches-ignore: [ "main" ]
     paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
     paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
@@ -87,7 +86,7 @@ jobs:
           path: /tmp/northstar-dedicated.tar
 
       - name: Push Docker image
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v7
         with:
           context: .
