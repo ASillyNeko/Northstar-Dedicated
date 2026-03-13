@@ -1,4 +1,4 @@
-FROM ubuntu:25.10
+FROM ubuntu:latest
 
 ENV WINEPREFIX=/home/northstar/.wine
 ENV NSWRAP_EXTWINE=1
