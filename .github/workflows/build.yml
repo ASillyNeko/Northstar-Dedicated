@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
 
     steps:
       - name: Checkout repository
@@ -27,6 +28,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -42,15 +50,48 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          push: false
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: type=docker,dest=/tmp/northstar-dedicated.tar
 
+      - name: Test Docker image
+        env:
+          RCLONE_CONFIG_CLOUDFLARE_TYPE: s3
+          RCLONE_CONFIG_CLOUDFLARE_PROVIDER: Cloudflare
+          RCLONE_CONFIG_CLOUDFLARE_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_CLOUDFLARE_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+        run: |
+          sudo apt-get update && sudo apt-get install rclone -y
+          rclone copy Cloudflare:titanfall2-files-github-actions ./github/build/titanfall2-files-github-actions
+          docker compose -f .github/build/docker-compose.yml up -d
+          timeout 60s python3 .github/build/wait_for_ping.py || ( echo "Failed, timed out."; docker compose -f .github/build/docker-compose.yml logs > /tmp/northstar_log.txt; docker compose kill; exit 1 )
+          docker compose kill
+          docker compose -f .github/build/docker-compose.yml logs > /tmp/northstar_log.txt
+
+      - name: Upload log file
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-log
+          path: /tmp/northstar_log.txt
+
       - name: Upload Docker image artifact
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: northstar-dedicated
           path: /tmp/northstar-dedicated.tar
+
+      - name: Push Docker image
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha

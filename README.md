@@ -69,7 +69,6 @@ services:
         +ns_allow_team_change 0
         +setplaylistvaroverrides "max_players 16 timelimit 15 scorelimit 1500"
         +sv_minupdaterate 60
-        +spewlog_enable 0
         +sv_max_props_multiplayer 500000
         +sv_max_prop_data_dwords_multiplayer 800000
         +net_chan_limit_msec_per_sec 500
