@@ -39,6 +39,6 @@ services:
         -multiple
         -nopakdedi
     volumes:
-      - ./github/build/titanfall2-files-github-actions:/mnt/titanfall2:ro
-      - ./github/build/Test-Build:/mnt/mods/Test-Build:ro
+      - ./titanfall2-files-github-actions:/mnt/titanfall2:ro
+      - ./Test-Build-Mod:/mnt/mods/Test-Build-Mod:ro
     restart: always
