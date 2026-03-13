@@ -2,7 +2,7 @@ global function TestBuild_Init
 
 void function TestBuild_Init()
 {
-	AddCallback_OnEntitiesLoaded( TestBuild_SendRequest )
+	AddCallback_EntitiesDidLoad( TestBuild_SendRequest )
 }
 
 void function TestBuild_SendRequest()
