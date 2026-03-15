@@ -61,3 +61,5 @@ jobs:
     with:
       ref: ${{ needs.get-northstar-version.outputs.ref }}
     secrets: inherit
+    permissions:
+     packages: write
