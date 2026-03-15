@@ -1,6 +1,8 @@
 name: update-northstar
 
 on:
+  push:
+    paths: [ '.github/workflows/update-northstar.yml' ]
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
