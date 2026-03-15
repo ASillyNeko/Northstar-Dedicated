@@ -83,7 +83,7 @@ jobs:
         run: |
           cd .github/build
           sudo apt-get update && sudo apt-get install rclone -y
-          rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions
+          rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions -v
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
           timeout 120s python3 wait_for_ping.py || ( echo "Failed, timed out."; docker compose logs > /tmp/test-build-log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
