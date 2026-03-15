@@ -5,6 +5,7 @@
   unixtools,
   writers,
   lib,
+  removeReferencesTo,
 }:
 let
   wine-ns = wine64Packages.stable;
@@ -64,6 +65,7 @@ stdenvNoCC.mkDerivation {
   nativeBuildInputs = [
     nswine
     unixtools.xxd
+    removeReferencesTo
   ];
   buildInputs = [
   ];
@@ -91,5 +93,7 @@ stdenvNoCC.mkDerivation {
       ! diff $TMP/diff1 $TMP/diff2
 
       ! diff ${wine-ns}/share/wine/wine.inf $out/share/wine/wine.inf
+
+      find $out -type f | xargs -r remove-references-to -t ${wine-ns}
   ";
 }
