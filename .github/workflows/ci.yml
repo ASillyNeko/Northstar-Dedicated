@@ -130,4 +130,4 @@ jobs:
       - name: Load and push Docker image
         run: |
           docker load -i /tmp/northstar-dedicated.tar
-          docker push --all-tags ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker push --all-tags ${{ env.REGISTRY }}/${IMAGE_NAME,,}
