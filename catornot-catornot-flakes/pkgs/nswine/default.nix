@@ -8,7 +8,7 @@
   removeReferencesTo,
 }:
 let
-  wine-ns = wine64Packages.minimal.override { tlsSupport = true; };
+  wine-ns = wine64Packages.minimal;
   wine-stable = wine64Packages.stable;
   nswine = buildGoModule {
     pname = "nswine";
@@ -81,6 +81,11 @@ stdenvNoCC.mkDerivation {
       cp -r --no-preserve=ownership ${wine-ns}/* $out
       chmod -R +rwXrwXrwX $out
       cp ${wine-stable}/lib/wine/x86_64-windows/explorer.exe $out/lib/wine/x86_64-windows/explorer.exe
+
+      # update these by running this and copying bcrypt.dll and bcrypt.so into wine directory
+      # nix build --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.wine64Packages.minimal.override { tlsSupport = true; }'
+      cp $src/wine/bcrypt.dll $out/lib/wine/x86_64-windows/bcrypt.dll
+      cp $src/wine/bcrypt.so $out/lib/wine/x86_64-unix/bcrypt.so
 
       mkdir -p $TMP/wine
       mkdir -p $TMP/lib/wine/x86_64-windows
