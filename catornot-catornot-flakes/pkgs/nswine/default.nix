@@ -5,9 +5,11 @@
   unixtools,
   writers,
   lib,
+  removeReferencesTo,
 }:
 let
-  wine-ns = wine64Packages.stable;
+  wine-ns = wine64Packages.minimal;
+  wine-stable = wine64Packages.stable;
   nswine = buildGoModule {
     pname = "nswine";
     version = "1.0.0";
@@ -64,6 +66,7 @@ stdenvNoCC.mkDerivation {
   nativeBuildInputs = [
     nswine
     unixtools.xxd
+    removeReferencesTo
   ];
   buildInputs = [
   ];
@@ -77,6 +80,12 @@ stdenvNoCC.mkDerivation {
       mkdir $out
       cp -r --no-preserve=ownership ${wine-ns}/* $out
       chmod -R +rwXrwXrwX $out
+      cp ${wine-stable}/lib/wine/x86_64-windows/explorer.exe $out/lib/wine/x86_64-windows/explorer.exe
+
+      # update these by running this and copying bcrypt.dll and bcrypt.so into wine directory
+      # nix build --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.wine64Packages.minimal.override { tlsSupport = true; }'
+      cp $src/wine/bcrypt.dll $out/lib/wine/x86_64-windows/bcrypt.dll
+      cp $src/wine/bcrypt.so $out/lib/wine/x86_64-unix/bcrypt.so
 
       mkdir -p $TMP/wine
       mkdir -p $TMP/lib/wine/x86_64-windows
@@ -85,11 +94,8 @@ stdenvNoCC.mkDerivation {
 
       ${lib.getExe patchthething} $out/lib/wine/x86_64-windows/explorer.exe
 
-      xxd ${wine-ns}/lib/wine/x86_64-windows/explorer.exe > $TMP/diff1
-      xxd $out/lib/wine/x86_64-windows/explorer.exe > $TMP/diff2
-
-      ! diff $TMP/diff1 $TMP/diff2
-
       ! diff ${wine-ns}/share/wine/wine.inf $out/share/wine/wine.inf
+
+      find $out -type f | xargs -r remove-references-to -t ${wine-ns} -t ${wine-stable}
   ";
 }

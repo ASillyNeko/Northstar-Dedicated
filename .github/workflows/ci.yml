@@ -1,10 +1,15 @@
-name: Build Docker Image
+name: ci
 
 on:
   push:
-    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
-    paths: [ '.github/workflows/build.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        default: ''
   workflow_dispatch:
 
 env:
@@ -14,13 +19,12 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
 
       - name: Get Northstar Version
         run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
@@ -28,7 +32,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
-      - name: Log in to the Container registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
@@ -49,15 +53,36 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: type=docker,dest=/tmp/northstar-dedicated.tar
 
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: northstar-dedicated
+          path: /tmp/northstar-dedicated.tar
+
+  test-build:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - name: Download Docker image
+        uses: actions/download-artifact@v8
+        with:
+          name: northstar-dedicated
+          path: /tmp
+
       - name: Test Docker image
-        if: github.event_name != 'pull_request'
         env:
           RCLONE_CONFIG_CLOUDFLARE_TYPE: s3
           RCLONE_CONFIG_CLOUDFLARE_PROVIDER: Cloudflare
@@ -67,33 +92,42 @@ jobs:
         run: |
           cd .github/build
           sudo apt-get update && sudo apt-get install rclone -y
-          rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions
+          rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions -v
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
-          timeout 120s python3 wait_for_ping.py || ( echo "Failed, timed out."; docker compose logs > /tmp/test-build-log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
+          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
           docker compose kill
           docker compose logs > /tmp/test-build-log.txt
 
       - name: Upload log file
-        if: always() && github.event_name != 'pull_request'
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: test-build-log
           path: /tmp/test-build-log.txt
 
-      - name: Upload Docker image artifact
-        if: always()
-        uses: actions/upload-artifact@v7
+  release:
+    needs: test-build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    steps:
+      - name: Download Docker image
+        uses: actions/download-artifact@v8
         with:
           name: northstar-dedicated
-          path: /tmp/northstar-dedicated.tar
+          path: /tmp
 
-      - name: Push Docker image
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v7
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
         with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Load and push Docker image
+        run: |
+          docker load -i /tmp/northstar-dedicated.tar
+          docker push --all-tags ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
