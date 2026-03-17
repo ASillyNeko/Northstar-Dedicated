@@ -1,6 +1,6 @@
 # Northstar-Dedicated
 
-Barebones example `docker-compose.yml`
+Barebones example `compose.yaml`
 
 ```yaml
 x-logging:
@@ -32,7 +32,7 @@ services:
     restart: always
 ```
 
-Skirmish Example
+Skirmish example `compose.yaml`
 
 ```yaml
 x-logging:
