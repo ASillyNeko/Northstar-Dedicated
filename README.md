@@ -14,7 +14,7 @@ x-logging:
 services:
   northstar-dedicated:
     << : *logging
-    image: ghcr.io/asillyneko/northstar-dedicated:latest
+    image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
     network_mode: host # DO NOT REMOVE
     tty: true
@@ -46,7 +46,7 @@ x-logging:
 services:
   northstar-dedicated:
     << : *logging
-    image: ghcr.io/asillyneko/northstar-dedicated:latest
+    image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
     network_mode: host # DO NOT REMOVE
     tty: true
