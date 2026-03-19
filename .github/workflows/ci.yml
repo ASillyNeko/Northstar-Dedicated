@@ -91,6 +91,7 @@ jobs:
           docker compose up -d
           timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; exit 1 )
           docker compose logs > /tmp/test-build-log.txt
+          docker compose kill
 
       - name: Upload log file
         if: always()
