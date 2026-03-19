@@ -19,12 +19,13 @@ def is_container_running():
 	return result.stdout.strip() != ""
 
 def watch_container():
-	if not is_container_running():
-		print("Container exited.")
+	while True:
+		if not is_container_running():
+			print("Container exited.")
 
-		os._exit(1)
+			os._exit(1)
 
-	time.sleep(1)
+		time.sleep(1)
 
 watcher = threading.Thread(target=watch_container, daemon=True)
 watcher.start()

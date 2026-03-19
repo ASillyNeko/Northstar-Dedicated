@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    paths: [ '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
-    paths: [ '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_call:
     inputs:
       ref:
@@ -67,7 +67,6 @@ jobs:
 
   test-build:
     needs: build
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -83,20 +82,14 @@ jobs:
           path: /tmp
 
       - name: Test Docker image
-        env:
-          RCLONE_CONFIG_CLOUDFLARE_TYPE: s3
-          RCLONE_CONFIG_CLOUDFLARE_PROVIDER: Cloudflare
-          RCLONE_CONFIG_CLOUDFLARE_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
-          RCLONE_CONFIG_CLOUDFLARE_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
         run: |
           cd .github/build
-          sudo apt-get update && sudo apt-get install rclone -y
-          rclone copy Cloudflare:titanfall2-files-github-actions titanfall2-files-github-actions -v
+          curl -fO https://titanfall2-files-github-actions.asillyneko.dev/titanfall2-files-github-actions.zip
+          unzip titanfall2-files-github-actions.zip -d titanfall2-files-github-actions
+          rm titanfall2-files-github-actions.zip
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
-          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
-          docker compose kill
+          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; exit 1 )
           docker compose logs > /tmp/test-build-log.txt
 
       - name: Upload log file

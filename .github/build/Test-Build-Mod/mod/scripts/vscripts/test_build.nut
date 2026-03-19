@@ -15,5 +15,24 @@ void function TestBuild_SendRequest()
 	else
 		WaitEndFrame()
 
-	NSHttpGet( "127.0.0.1:7274" )
+	void functionref( HttpRequestResponse ) onSuccess = void function ( HttpRequestResponse response )
+	{
+		if ( NSIsSuccessHttpCode( response.statusCode ) )
+		{
+			NSHttpGet( "127.0.0.1:7274" )
+		}
+		else
+		{
+			printt( "Github ping request failed." )
+			ServerCommand( "quit" )
+		}
+	}
+
+	void functionref( HttpRequestFailure ) onFailure = void function ( HttpRequestFailure response )
+	{
+		printt( "Github ping request failed." )
+		ServerCommand( "quit" )
+	}
+
+	NSHttpGet( "https://www.githubstatus.com/", {}, onSuccess, onFailure )
 }
