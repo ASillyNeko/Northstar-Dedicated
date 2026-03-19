@@ -85,7 +85,7 @@ jobs:
         run: |
           cd .github/build
           curl -fO https://titanfall2-files-github-actions.asillyneko.dev/titanfall2-files-github-actions.zip
-          unzip titanfall2-files-github-actions.zip -t titanfall2-files-github-actions
+          unzip titanfall2-files-github-actions.zip -d titanfall2-files-github-actions
           rm titanfall2-files-github-actions.zip
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
