@@ -4,7 +4,7 @@ on:
   push:
     paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
-    paths: [ '.github/build/**', .github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_call:
     inputs:
       ref:
