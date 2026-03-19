@@ -89,9 +89,9 @@ jobs:
           rm titanfall2-files-github-actions.zip
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
-          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; docker compose -f .github/build/docker-compose.yml kill; exit 1 )
-          docker compose kill
+          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; docker compose kill; exit 1 )
           docker compose logs > /tmp/test-build-log.txt
+          docker compose kill
 
       - name: Upload log file
         if: always()
