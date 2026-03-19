@@ -28,7 +28,7 @@ void function TestBuild_SendRequest()
 		}
 	}
 
-	void functionref( HttpRequestResponse ) onFailure = void function ( HttpRequestResponse response )
+	void functionref( HttpRequestFailure ) onFailure = void function ( HttpRequestFailure response )
 	{
 		printt( "Github ping request failed." )
 		ServerCommand( "quit" )
