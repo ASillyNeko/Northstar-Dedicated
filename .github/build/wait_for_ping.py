@@ -26,6 +26,8 @@ def watch_container():
 
 	time.sleep(1)
 
+time.sleep(1)
+
 watcher = threading.Thread(target=watch_container, daemon=True)
 watcher.start()
 
