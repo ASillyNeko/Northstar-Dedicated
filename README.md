@@ -68,17 +68,11 @@ services:
         +ns_should_return_to_lobby 0
         +ns_allow_team_change 0
         +setplaylistvaroverrides "max_players 16 timelimit 15 scorelimit 1500"
-        +sv_minupdaterate 60
         +sv_max_props_multiplayer 500000
         +sv_max_prop_data_dwords_multiplayer 800000
         +net_chan_limit_msec_per_sec 500
         +net_compresspackets 1
-        +net_compresspackets_minsize 32
-        +base_tickinterval_mp 0.016666667
-        +rate 786432
-        +sv_updaterate_mp 60
-        +sv_minupdaterate 60
-        +sv_max_snapshots_multiplayer 900
+        +net_compresspackets_minsize 64
         -enablechathooks
         -allowlocalhttp
         -multiple
