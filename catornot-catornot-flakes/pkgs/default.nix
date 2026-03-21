@@ -34,7 +34,6 @@
         in
         rec {
           nswrap = pkgs.callPackage ./nswrap { };
-          nswine-env = pkgs.callPackage ./nswine-env { inherit nswine; };
           nswine = pkgs.callPackage ./nswine { };
         };
     };
