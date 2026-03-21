@@ -1341,7 +1341,10 @@ cleanup:
                 clock_gettime(CLOCK_MONOTONIC, &tc);
                 if (tc.tv_sec - ts.tv_sec > 5) {
                     NSLOG_WRN("children did not exit in time");
-                    return 1;
+                    if (killpg(state.wine.pid, SIGKILL) == -1) {
+                        NSLOG_ERRNO("failed to killpg wine (pid=%d)", (int)(state.wine.pid));
+                    }
+                    break;
                 }
                 nanosleep(&(struct timespec){
                     .tv_nsec = 100 * 1000 * 1000,
