@@ -3,17 +3,8 @@
 Barebones example `compose.yaml`
 
 ```yaml
-x-logging:
-  &logging
-  logging:
-    driver: "json-file"
-    options:
-      max-file: "5"
-      max-size: "400m"
-
 services:
   northstar-dedicated:
-    << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
     network_mode: host # DO NOT REMOVE
@@ -35,17 +26,8 @@ services:
 Skirmish example `compose.yaml`
 
 ```yaml
-x-logging:
-  &logging
-  logging:
-    driver: "json-file"
-    options:
-      max-file: "5"
-      max-size: "400m"
-
 services:
   northstar-dedicated:
-    << : *logging
     image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
     network_mode: host # DO NOT REMOVE
