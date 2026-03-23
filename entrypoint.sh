@@ -179,10 +179,10 @@ if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
 	done
 fi
 
-NS_EXTRA_ONELINE=""
-
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-	NS_EXTRA_ONELINE=$(printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ')
+	printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ' > "$TMP_DIR/ns_startup_args_dedi.txt"
 fi
 
-eval "exec env PATH=\"/home/northstar/nswine/bin:$PATH\" /home/northstar/nswrap/bin/nswrap -dedicated -port $PORT $NS_EXTRA_ONELINE"
+export PATH=/home/northstar/nswine/bin:$PATH
+
+/home/northstar/nswrap/bin/nswrap -dedicated -port $PORT
