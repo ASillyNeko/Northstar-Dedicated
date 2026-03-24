@@ -55,7 +55,7 @@ jobs:
             docker tag ghcr.io/asillyneko/northstar-dedicated:latest "$tag"
           done
 
-          docker save ghcr.io/asillyneko/northstar-dedicated:latest -o /tmp/northstar-dedicated.tar
+          docker save ghcr.io/asillyneko/northstar-dedicated -o /tmp/northstar-dedicated.tar
 
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v7
