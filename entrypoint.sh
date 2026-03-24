@@ -40,6 +40,7 @@ for file in "$TF2_DIR"/* "$NORTHSTAR_DIR"/*; do
 
 	[ "$basename" != "R2Northstar" ] || continue
 	[ "$basename" != "bin" ] || continue
+	[ "$basename" != "ns_startup_args_dedi.txt" ] || continue
 
 	ln -sfn "$file" "$TMP_DIR/$basename"
 done
@@ -181,6 +182,8 @@ fi
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
 	printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ' > "$TMP_DIR/ns_startup_args_dedi.txt"
+else
+	printf '%s' "+setplaylist private_match" > "$TMP_DIR/ns_startup_args_dedi.txt"
 fi
 
 export PATH=/home/northstar/nswine/bin:$PATH
