@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   pull_request:
-    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'Dockerfile', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
   workflow_call:
     inputs:
       ref:
@@ -26,18 +26,16 @@ jobs:
         with:
           ref: ${{ inputs.ref || github.ref }}
 
-      - name: Get Northstar Version
-        run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Magic nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Get Northstar version
+        run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -45,19 +43,19 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
             type=raw,value=${{ env.NORTHSTAR_VERSION }}
             type=sha
 
       - name: Build Docker image
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/northstar-dedicated.tar
+        run: |
+          nix build
+          docker load -i result
+
+          for tag in $(echo "${{ steps.meta.outputs.tags }}"); do
+            docker tag ghcr.io/asillyneko/northstar-dedicated:latest "$tag"
+          done
+
+          docker save ghcr.io/asillyneko/northstar-dedicated -o /tmp/northstar-dedicated.tar
 
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v7
