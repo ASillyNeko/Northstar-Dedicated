@@ -10,8 +10,8 @@
   let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-    northstarVersion = "v1.31.6";
-    northstarSha256sum = "sha256:33c192850cceefea4cbfc9862489fb87d960ad129ab98941bbc29e0907c7e357";
+    northstarVersion = builtins.head (builtins.match ".*NORTHSTAR_VERSION=([^ ]+).*" (builtins.replaceStrings ["\n"] [" "] (builtins.readFile ./northstar_version.sh)));
+    northstarSha256sum = builtins.head (builtins.match ".*NORTHSTAR_GITHUB_SHA256SUM=([^ ]+).*" (builtins.replaceStrings ["\n"] [" "] (builtins.readFile ./northstar_version.sh)));
 
     northstar = pkgs.stdenv.mkDerivation {
       name = "northstar-${northstarVersion}";
