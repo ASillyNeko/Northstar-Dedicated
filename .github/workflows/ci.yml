@@ -26,7 +26,15 @@ jobs:
         with:
           ref: ${{ inputs.ref || github.ref }}
 
-      - name: Get Northstar Version
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Magic nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Get Northstar version
         run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
@@ -50,14 +58,15 @@ jobs:
             type=sha
 
       - name: Build Docker image
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/northstar-dedicated.tar
+        run: |
+          nix build
+          docker load -i result
+
+          for tag in ${{ steps.meta.outputs.tag }}; do
+            docker tag ghcr.io/asillyneko/northstar-dedicated:latest "$tag"
+          done
+
+          docker save ghcr.io/asillyneko/northstar-dedicated:latest -o /tmp/northstar-dedicated.tar
 
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v7

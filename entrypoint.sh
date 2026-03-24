@@ -11,7 +11,7 @@ if [ -d "$TMP_DIR/" ]; then
 	rm -r "$TMP_DIR"
 fi
 
-mkdir "$TMP_DIR"
+mkdir -p "$TMP_DIR"
 
 if [ ! -d "$TF2_DIR/" ]; then
 	echo "TF2 directory doesn't exist or is not a directory."
