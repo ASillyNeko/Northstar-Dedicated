@@ -9,22 +9,23 @@
   outputs = { self, nixpkgs, catornot-flakes }:
   let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    nswine = catornot-flakes.packages.x86_64-linux.nswine;
+    nswrap = catornot-flakes.packages.x86_64-linux.nswrap;
 
     northstarVersion = builtins.head (builtins.match ".*NORTHSTAR_VERSION=([^ ]+).*" (builtins.replaceStrings ["\n"] [" "] (builtins.readFile ./northstar_version.sh)));
     northstarSha256sum = builtins.head (builtins.match ".*NORTHSTAR_GITHUB_SHA256SUM=([^ ]+).*" (builtins.replaceStrings ["\n"] [" "] (builtins.readFile ./northstar_version.sh)));
 
     northstar = pkgs.stdenv.mkDerivation {
       name = "northstar-${northstarVersion}";
+
       src = pkgs.fetchurl {
         url = "https://github.com/R2Northstar/Northstar/releases/download/${northstarVersion}/Northstar.release.${northstarVersion}.zip";
         sha256 = "${northstarSha256sum}";
       };
+
       nativeBuildInputs = [ pkgs.unzip ];
       unpackPhase = "unzip $src -d $out";
     };
-
-    nswine = catornot-flakes.packages.x86_64-linux.nswine;
-    nswrap = catornot-flakes.packages.x86_64-linux.nswrap;
 
     entrypoint = pkgs.runCommand "entrypoint.sh" {} ''
       cp ${./entrypoint.sh} $out
