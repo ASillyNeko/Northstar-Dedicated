@@ -60,6 +60,7 @@ jobs:
         with:
           name: northstar-dedicated
           path: /tmp/northstar-dedicated.tar
+          archive: false
 
   test-build:
     needs: build
@@ -95,6 +96,7 @@ jobs:
         with:
           name: test-build-log
           path: /tmp/test-build-log.txt
+          archive: false
 
   release:
     needs: test-build
