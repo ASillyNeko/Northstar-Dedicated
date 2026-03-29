@@ -58,7 +58,6 @@ jobs:
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v7
         with:
-          name: northstar-dedicated
           path: /tmp/northstar-dedicated.tar
           archive: false
 
@@ -75,7 +74,7 @@ jobs:
       - name: Download Docker image
         uses: actions/download-artifact@v8
         with:
-          name: northstar-dedicated
+          name: northstar-dedicated.tar
           path: /tmp
 
       - name: Test Docker image
@@ -94,7 +93,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: test-build-log
           path: /tmp/test-build-log.txt
           archive: false
 
@@ -109,7 +107,7 @@ jobs:
       - name: Download Docker image
         uses: actions/download-artifact@v8
         with:
-          name: northstar-dedicated
+          name: northstar-dedicated.tar
           path: /tmp
 
       - name: Login to GitHub Container Registry
