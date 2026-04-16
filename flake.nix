@@ -43,8 +43,8 @@
       # 24.04
       fromImage = pkgs.dockerTools.pullImage {
         imageName = "ubuntu";
-        imageDigest = "sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b";
-        sha256 = "sha256-vnywSI2ZFhVS5ttBVjk42hb2HofKXvxwLSkr6YIHDsM=";
+        imageDigest = "sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b";
+        sha256 = "sha256-kb//V7K505fUXth8qHeVK1AlayGYCEYK5vZPidLFNjE=";
       };
 
       contents = [ pkgs.bashInteractive nswine nswrap ];
