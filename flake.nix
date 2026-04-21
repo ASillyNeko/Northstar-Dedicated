@@ -40,11 +40,11 @@
       name = "ghcr.io/asillyneko/northstar-dedicated";
       tag = "latest";
 
-      # 26.04
+      # 3.23.4
       fromImage = pkgs.dockerTools.pullImage {
-        imageName = "ubuntu";
-        imageDigest = "sha256:5e275723f82c67e387ba9e3c24baa0abdcb268917f276a0561c97bef9450d0b4";
-        sha256 = "sha256-F8kj/q43tlhTi62P803ZsWKZuh2UHwWRlr2phQQQWVQ=";
+        imageName = "alpine";
+        imageDigest = "sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11";
+        sha256 = "sha256-vI46SeZqcFQF+4+IThG/NwWIQqG+z0zpVepvdDvMpTs=";
       };
 
       contents = [ pkgs.bashInteractive nswine nswrap ];
