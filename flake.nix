@@ -47,7 +47,7 @@
         sha256 = "sha256-vI46SeZqcFQF+4+IThG/NwWIQqG+z0zpVepvdDvMpTs=";
       };
 
-      contents = [ pkgs.bashInteractive nswine nswrap ];
+      contents = [ nswine nswrap ];
 
       extraCommands = ''
         mkdir -p home/northstar mnt/northstar
