@@ -24,7 +24,6 @@
               withSystem prev.stdenv.hostPlatform.system (
                 { config, ... }:
                 {
-                  nswine-env = config.packages.nswine-env;
                   nswrap = config.packages.nswrap;
                   nswine = config.packages.nswine;
                 }
