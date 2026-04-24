@@ -27,7 +27,7 @@ void function TestBuild_SendRequest()
 		ServerCommand( "quit" )
 	}
 
-	if ( !GetConVarString( "ns_convar_test_url" ) != "https://northstar.tf" )
+	if ( GetConVarString( "ns_convar_test_url" ) != "https://northstar.tf" )
 	{
 		printt( "Failed to set ns_convar_test_url" )
 		ServerCommand( "quit" )
