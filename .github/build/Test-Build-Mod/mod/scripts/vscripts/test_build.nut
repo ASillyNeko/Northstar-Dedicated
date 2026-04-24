@@ -15,8 +15,23 @@ void function TestBuild_SendRequest()
 	else
 		WaitEndFrame()
 
-	if ( !GetConVarBool( "ns_convar_test" ) || !GetConVarBool( "changed_convars" ) )
+	if ( !GetConVarBool( "changed_convars" ) )
+	{
+		printt( "Failed to set NS_CONVARS" )
 		ServerCommand( "quit" )
+	}
+
+	if ( !GetConVarBool( "ns_convar_test" ) )
+	{
+		printt( "Failed to set ns_convar_test" )
+		ServerCommand( "quit" )
+	}
+
+	if ( !GetConVarString( "ns_convar_test_url" ) != "https://northstar.tf" )
+	{
+		printt( "Failed to set ns_convar_test_url" )
+		ServerCommand( "quit" )
+	}
 
 	void functionref( HttpRequestResponse ) onSuccess = void function ( HttpRequestResponse response )
 	{
@@ -26,16 +41,16 @@ void function TestBuild_SendRequest()
 		}
 		else
 		{
-			printt( "Github ping request failed." )
+			printt( "Failed https request." )
 			ServerCommand( "quit" )
 		}
 	}
 
 	void functionref( HttpRequestFailure ) onFailure = void function ( HttpRequestFailure response )
 	{
-		printt( "Github ping request failed." )
+		printt( "Failed https request." )
 		ServerCommand( "quit" )
 	}
 
-	NSHttpGet( "https://www.githubstatus.com/", {}, onSuccess, onFailure )
+	NSHttpGet( "https://www.githubstatus.com", {}, onSuccess, onFailure )
 }

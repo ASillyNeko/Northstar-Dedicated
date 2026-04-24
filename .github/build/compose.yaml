@@ -25,6 +25,7 @@ services:
       - |
         NS_CONVARS=
         ns_convar_test = "1"
+        ns_convar_test_url = "https://northstar.tf"
     volumes:
       - ./titanfall2-files-github-actions:/mnt/titanfall2:ro
       - ./Test-Build-Mod:/mnt/mods/Test-Build-Mod:ro
