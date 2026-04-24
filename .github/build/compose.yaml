@@ -24,7 +24,7 @@ services:
         -nopakdedi
       - |
         NS_CONVARS=
-        ns_masterserver_hostname = "https://northstar.tf"
+        ns_convar_test = "1"
     volumes:
       - ./titanfall2-files-github-actions:/mnt/titanfall2:ro
       - ./Test-Build-Mod:/mnt/mods/Test-Build-Mod:ro
