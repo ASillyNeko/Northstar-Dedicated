@@ -9,6 +9,7 @@ services:
       - NSWRAP_NOWATCHDOGQUIT=1
       - |
         NS_EXTRA_ARGUMENTS=
+        +ns_server_name "Northstar-Dedicated Build Tester"
         +setplaylist tdm
         +mp_gamemode tdm
         +map mp_coliseum
@@ -18,14 +19,12 @@ services:
         +net_compresspackets 1
         +net_compresspackets_minsize 64
         +ns_report_server_to_masterserver 0
+        +ns_convar_test 1
+        +ns_convar_test_url "https://northstar.tf"
         -enablechathooks
         -allowlocalhttp
         -multiple
         -nopakdedi
-      - |
-        NS_CONVARS=
-        ns_convar_test = "1"
-        ns_convar_test_url = "https://northstar.tf"
     volumes:
       - ./titanfall2-files-github-actions:/mnt/titanfall2:ro
       - ./Test-Build-Mod:/mnt/mods/Test-Build-Mod:ro

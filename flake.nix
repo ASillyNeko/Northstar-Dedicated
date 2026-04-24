@@ -27,8 +27,6 @@
       unpackPhase = "unzip $src -d $out";
     };
 
-    convar-setter = ./Nekos.Northstar.Dedicated.Convar.Setter;
-
     entrypoint = pkgs.runCommand "entrypoint.sh" {} ''
       cp ${./entrypoint.sh} $out
       chmod +x $out
@@ -52,9 +50,8 @@
       contents = [ nswine nswrap ];
 
       extraCommands = ''
-        mkdir -p home/northstar mnt/northstar mnt/Nekos.Northstar.Dedicated.Convar.Setter
+        mkdir -p home/northstar mnt/northstar
         cp -r ${northstar}/* mnt/northstar/
-        cp -r ${convar-setter}/* mnt/Nekos.Northstar.Dedicated.Convar.Setter/
       '';
 
       config = {

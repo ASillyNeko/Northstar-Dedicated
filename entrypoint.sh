@@ -3,7 +3,6 @@ set -e
 
 TF2_DIR=/mnt/titanfall2
 NORTHSTAR_DIR=/mnt/northstar
-CONVAR_SETTER_DIR=/mnt/Nekos.Northstar.Dedicated.Convar.Setter
 MODS_DIR=/mnt/mods
 PLUGINS_DIR=/mnt/plugins
 TMP_DIR=/tmp/northstar
@@ -134,22 +133,6 @@ for file in "$TF2_DIR/bin"/* "$NORTHSTAR_DIR/bin"/*; do
 	fi
 done
 
-cp -r "$CONVAR_SETTER_DIR" "$TMP_DIR/R2Northstar/mods/Nekos.Northstar.Dedicated.Convar.Setter"
-
-{
-	printf 'global const table< string, string > northstar_dedicated_convars = {\n'
-
-	if [ -n "$NS_CONVARS" ]; then
-		printf '%s\n' "$NS_CONVARS" | sed 's/^[[:space:]]*//' | grep -E '^[a-zA-Z_]' | while read -r line; do
-			key=$(printf '%s' "$line" | awk -F '[[:space:]]*=[[:space:]]*' '{print $1}')
-			value=$(printf '%s' "$line" | sed 's/^[^=]*=[[:space:]]*//' | sed 's/^"\(.*\)"$/\1/')
-			printf '\t%s = "%s",\n' "$key" "$value"
-		done
-	fi
-
-	printf '}'
-} > "$TMP_DIR/R2Northstar/mods/Nekos.Northstar.Dedicated.Convar.Setter/mod/scripts/vscripts/convars.nut"
-
 if [ -d "$MODS_DIR" ]; then
 	for file in "$MODS_DIR"/*/; do
 		[ -d "$file" ] || continue
@@ -190,14 +173,10 @@ PORT=${NS_PORT:-37016}
 TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 
 if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
-	printf '%s\n' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^[+-]' | while read -r arg; do
-		key=$(printf '%s' "$arg" | sed 's/^[+-]//' | awk '{print $1}')
-
-		[ -n "$key" ] && sed -i "/^$key[ \t]/d" "$TARGET_CFG"
+	printf '\n%s' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^\+' | while read -r arg; do
+		printf '\n%s' "${arg#\+}" >> "$TARGET_CFG"
 	done
-fi
 
-if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
 	printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ' > "$TMP_DIR/ns_startup_args_dedi.txt"
 else
 	printf '%s' "+setplaylist private_match" > "$TMP_DIR/ns_startup_args_dedi.txt"

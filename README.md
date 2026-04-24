@@ -1,7 +1,7 @@
 # Northstar-Dedicated
 
 > [!WARNING]
-> THIS IMAGE IS UNTESTED ON WINDOWS, AND MAC OS, THIS IMAGE SHOULD ONLY BE USED ON LINUX
+> THIS IMAGE IS UNTESTED/UNSUPPORTED ON WINDOWS, AND MAC OS, THIS IMAGE SHOULD ONLY BE USED ON LINUX
 
 Barebones example `compose.yaml`
 
@@ -18,11 +18,9 @@ services:
       - NSWRAP_NOWATCHDOGQUIT=0 # Set to 1 if ns_report_server_to_masterserver is set to 0
       - |
         NS_EXTRA_ARGUMENTS=
+        +ns_server_name "Example Barebones Northstar Docker Server"
+        +ns_server_desc "Example Server Desc https://northstar.tf"
         -multiple
-      - |
-        NS_CONVARS=
-        ns_server_name = "Example Barebones Northstar Docker Server"
-        ns_server_desc = "Example Server Desc https://northstar.tf"
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
     restart: always
@@ -43,6 +41,8 @@ services:
       - NSWRAP_NOWATCHDOGQUIT=0 # Set to 1 if ns_report_server_to_masterserver is set to 0
       - |
         NS_EXTRA_ARGUMENTS=
+        +ns_server_name "Example Skirmish Northstar Docker Server"
+        +ns_server_desc "Example Server Desc https://northstar.tf"
         +setplaylist tdm
         +mp_gamemode tdm
         +map mp_forwardbase_kodai
@@ -62,10 +62,6 @@ services:
         -allowlocalhttp
         -multiple
         -nopakdedi
-      - |
-        NS_CONVARS=
-        ns_server_name = "Example Skirmish Northstar Docker Server"
-        ns_server_desc = "Example Server Desc https://northstar.tf"
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro
@@ -105,19 +101,9 @@ New size 6.0GB with `-nopakdedi` 8.1GB without `-nopakdedi`
 ## Configuration
 You can run commands on startup by doing `+command_name value` like `+setplaylist tdm` or `+map mp_forwardbase_kodai` in `NS_EXTRA_ARGUMENTS`
 
-You can change the values of convars by doing `+convar_name "value"` in `NS_EXTRA_ARGUMENTS`, quotes aren't needed but if the value contains `//` then use `NS_CONVARS` otherwise the value would be `https:` not something like `https://northstar.tf`
-
-`NS_CONVARS` only supports convars, not commands, but can be used for any convar not just ones with `//`. Must be `convar = "value"`
-
-```yaml
-      - |
-        NS_EXTRA_ARGUMENTS=
-        -multiple
-      - |
-        NS_CONVARS=
-        ns_server_name = "Example Barebones Northstar Docker Server"
-        ns_server_desc = "Example Server Desc https://northstar.tf"
-```
+You can change the values of convars by doing `+convar_name "new value"` quotes aren't needed but if you have `//` in the new value it'll be cut off for example
+`+somerandom_convar https://northstar.tf` becomes `https:` but with quotes `+convar_name "https://northstar.tf"` it becomes `https://northstar.tf`
+`+ns_allow_team_change 0` it becomes `0` and with quotes `+ns_allow_team_change "0"` it's still `0`
 
 You can add launch args by doing `-launcharg` like `-multiple` or `-nopakdedi`
 

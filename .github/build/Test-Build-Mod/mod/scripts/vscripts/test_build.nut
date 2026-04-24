@@ -15,21 +15,15 @@ void function TestBuild_SendRequest()
 	else
 		WaitEndFrame()
 
-	if ( !GetConVarBool( "changed_convars" ) )
-	{
-		printt( "Failed to set NS_CONVARS" )
-		ServerCommand( "quit" )
-	}
-
 	if ( !GetConVarBool( "ns_convar_test" ) )
 	{
-		printt( "Failed to set ns_convar_test" )
+		printt( "Failed to set ns_convar_test: " + GetConVarString( "ns_convar_test" ) )
 		ServerCommand( "quit" )
 	}
 
 	if ( GetConVarString( "ns_convar_test_url" ) != "https://northstar.tf" )
 	{
-		printt( "Failed to set ns_convar_test_url" )
+		printt( "Failed to set ns_convar_test_url: " + GetConVarString( "ns_convar_test_url" ) )
 		ServerCommand( "quit" )
 	}
 
@@ -41,7 +35,7 @@ void function TestBuild_SendRequest()
 		}
 		else
 		{
-			printt( "Failed https request." )
+			printt( "Failed https request: " + response.statusCode )
 			ServerCommand( "quit" )
 		}
 	}
