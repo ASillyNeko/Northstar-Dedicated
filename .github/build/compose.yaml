@@ -22,6 +22,9 @@ services:
         -allowlocalhttp
         -multiple
         -nopakdedi
+      - |
+        NS_CONVARS=
+        ns_masterserver_hostname = "https://northstar.tf"
     volumes:
       - ./titanfall2-files-github-actions:/mnt/titanfall2:ro
       - ./Test-Build-Mod:/mnt/mods/Test-Build-Mod:ro

@@ -4,6 +4,12 @@
 	"Version": "1.0.0",
 	"LoadPriority": 20,
 	"RequiredOnClient": false,
+	"ConVars": [
+		{
+			"Name": "ns_convar_test",
+			"DefaultValue": "0"
+		}
+	],
 	"Scripts": [
 		{
 			"Path": "test_build.nut",

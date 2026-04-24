@@ -15,6 +15,9 @@ void function TestBuild_SendRequest()
 	else
 		WaitEndFrame()
 
+	if ( !GetConVarBool( "ns_convar_test" ) || !GetConVarBool( "changed_convars" ) )
+		ServerCommand( "quit" )
+
 	void functionref( HttpRequestResponse ) onSuccess = void function ( HttpRequestResponse response )
 	{
 		if ( NSIsSuccessHttpCode( response.statusCode ) )
