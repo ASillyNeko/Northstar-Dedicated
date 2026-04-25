@@ -2,7 +2,6 @@
   stdenvNoCC,
   wine64Packages,
   buildGoModule,
-  unixtools,
   writers,
   lib,
   removeReferencesTo,
@@ -65,7 +64,6 @@ stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = [
     nswine
-    unixtools.xxd
     removeReferencesTo
   ];
   buildInputs = [
