@@ -10,7 +10,6 @@ services:
   northstar-dedicated:
     image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
-    network_mode: host # DO NOT REMOVE
     tty: true
     stdin_open: true
     environment:
@@ -23,6 +22,8 @@ services:
         -multiple
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
+    ports:
+      - '37016:37016'
     restart: always
 ```
 
@@ -33,7 +34,6 @@ services:
   northstar-dedicated:
     image: ghcr.io/asillyneko/northstar-dedicated
     pull_policy: always
-    network_mode: host # DO NOT REMOVE
     tty: true
     stdin_open: true
     environment:
@@ -67,6 +67,8 @@ services:
       - /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Save-Data:/mnt/northstar/R2Northstar/save_data
+    ports:
+      - '37016:37016'
     restart: always
 ```
 
@@ -108,6 +110,7 @@ You can change the values of convars by doing `+convar_name "new value"` quotes 
 You can add launch args by doing `-launcharg` like `-multiple` or `-nopakdedi`
 
 It's recommended to set `NS_PORT` to a port between `37016` and `37041` although you can set it to something like `37042`
+Also make sure both of these `'37016:37016'` are set to the same port as `NS_PORT`
 
 ### Volumes
 > [!NOTE]
