@@ -58,6 +58,9 @@
         Env = [ "WINEPREFIX=/home/northstar/.wine" "NSWRAP_EXTWINE=1" ];
         WorkingDir = "/home/northstar";
         Entrypoint = [ "${entrypoint}" ];
+        ExposedPorts = {
+          "37016/udp" = {};
+        };
       };
     };
   };
