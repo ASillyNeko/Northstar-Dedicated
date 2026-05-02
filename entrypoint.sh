@@ -1,5 +1,10 @@
 #!/bin/sh
-set -e
+
+if [ -n "${DEV:-}" ]; then
+	set -euxo pipefail
+else
+	set -euo pipefail
+fi
 
 TF2_DIR=/mnt/titanfall2
 NORTHSTAR_DIR=/mnt/northstar
@@ -172,10 +177,10 @@ cd "$TMP_DIR"
 PORT=${NS_PORT:-37016}
 TARGET_CFG="$TMP_DIR/R2Northstar/mods/Northstar.CustomServers/mod/cfg/autoexec_ns_server.cfg"
 
-if [ -n "$NS_EXTRA_ARGUMENTS" ]; then
+if [ -n "${NS_EXTRA_ARGUMENTS:-}" ]; then
 	printf '\n%s' "$NS_EXTRA_ARGUMENTS" | sed 's/^[[:space:]]*//' | grep -E '^\+' | while read -r arg; do
 		printf '\n%s' "${arg#\+}" >> "$TARGET_CFG"
-	done
+	done || true
 
 	printf '%s' "$NS_EXTRA_ARGUMENTS" | tr '\n' ' ' > "$TMP_DIR/ns_startup_args_dedi.txt"
 else
@@ -184,4 +189,4 @@ fi
 
 export PATH=/home/northstar/nswine/bin:$PATH
 
-/home/northstar/nswrap/bin/nswrap -dedicated -port "$PORT"
+exec /home/northstar/nswrap/bin/nswrap -dedicated -port "$PORT"
