@@ -29,7 +29,7 @@ void function TestBuild_SendRequest()
 
 	TestBuild_NavMesh()
 
-	void functionref( HttpRequestResponse ) onSuccess = void function ( HttpRequestResponse response )
+	void functionref( HttpRequestResponse ) onSuccess = void function( HttpRequestResponse response )
 	{
 		if ( NSIsSuccessHttpCode( response.statusCode ) )
 		{
@@ -48,7 +48,7 @@ void function TestBuild_SendRequest()
 		}
 	}
 
-	void functionref( HttpRequestFailure ) onFailure = void function ( HttpRequestFailure response )
+	void functionref( HttpRequestFailure ) onFailure = void function( HttpRequestFailure response )
 	{
 		printt( "Failed https request." )
 		ServerCommand( "quit" )
@@ -61,11 +61,14 @@ void function TestBuild_NavMesh()
 {
 	if ( !NavMesh_IsUpToDate() || GetAINScriptVersion() != AIN_REV || !GetNodeCount() )
 	{
-		printt( "Bad NavMesh/AIN: NavMesh_IsUpToDate=" + NavMesh_IsUpToDate() + " GetAINScriptVersion=" + GetAINScriptVersion() + " AIN_REV=" + AIN_REV + " GetNodeCount=" + GetNodeCount() )
+		printt(
+			"Bad NavMesh/AIN: NavMesh_IsUpToDate=" + NavMesh_IsUpToDate() + " GetAINScriptVersion=" + GetAINScriptVersion() + " AIN_REV=" + AIN_REV + " GetNodeCount=" +
+				GetNodeCount()
+		)
 		ServerCommand( "quit" )
 	}
 
-	entity titan = CreateNPCTitanFromSettings( GetAllowedPlayerTitanSettings()[0], TEAM_UNASSIGNED, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) )
+	entity titan = CreateNPCTitanFromSettings( GetAllowedPlayerTitanSettings()[ 0 ], TEAM_UNASSIGNED, Vector( 0, 0, 0 ), Vector( 0, 0, 0 ) )
 
 	titan.SetOrigin( Vector( -752, 0, 96 ) )
 	titan.SetInvulnerable()
