@@ -9,7 +9,7 @@ on:
 
 jobs:
   get-northstar-version:
-    if: github.repository == 'ASillyNeko/Northstar-Dedicated'
+    if: github.repository == 'ASillyNeko/Northstar-Dedicated' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
