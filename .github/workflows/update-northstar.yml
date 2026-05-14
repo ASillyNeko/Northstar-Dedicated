@@ -2,7 +2,7 @@ name: update-northstar
 
 on:
   push:
-    paths: [ '.github/workflows/update-northstar.yml' ]
+    paths: ['.github/workflows/update-northstar.yml']
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231 # main
 
       - name: Get Northstar Version
         run: |
