@@ -3,17 +3,21 @@ name: GitHub Actions Security Analysis
 on:
   push:
     branches: ['main']
-  pull_request:
+  pull_request_target:
     branches: ['**']
 
 jobs:
   zizmor:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231 # main
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run zizmor
         uses: zizmorcore/zizmor-action@06928c5dcba418c7d6108a4bd6e2d34cbf3c9377 # main
