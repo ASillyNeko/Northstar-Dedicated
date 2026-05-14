@@ -10,16 +10,22 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    patterns:
+      - "*"
     multi-ecosystem-group: "everything"
 
   - package-ecosystem: "nix"
     directory: "/"
     schedule:
       interval: "weekly"
+    patterns:
+      - "*"
     multi-ecosystem-group: "everything"
 
   - package-ecosystem: "nix"
     directory: "/catornot-catornot-flakes"
     schedule:
       interval: "weekly"
+    patterns:
+      - "*"
     multi-ecosystem-group: "everything"
