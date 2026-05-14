@@ -9,6 +9,7 @@ on:
 
 jobs:
   get-northstar-version:
+    if: github.repository == 'ASillyNeko/Northstar-Dedicated'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@main
 
       - name: Get Northstar Version
         run: |
@@ -62,4 +63,4 @@ jobs:
       ref: ${{ needs.get-northstar-version.outputs.ref }}
     secrets: inherit
     permissions:
-     packages: write
+      packages: write
