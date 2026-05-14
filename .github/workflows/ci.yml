@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: ['.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**']
   pull_request:
-    paths: [ '.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**' ]
+    paths: ['.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**']
   workflow_call:
     inputs:
       ref:
@@ -22,28 +22,29 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231 # main
         with:
           ref: ${{ inputs.ref || github.ref }}
 
       - name: Install nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@aa0e5400805113bf2d5d8f9ba11ff9148bd372a3 # main
 
       - name: Magic nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+        uses: DeterminateSystems/magic-nix-cache-action@5626df0a8b8f16cb060538f6d3041500a2d10cb0 # main
         with:
           use-flakehub: false
 
       - name: Get Northstar version
-        run: echo "NORTHSTAR_VERSION=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_ENV
+        id: northstar_version
+        run: echo "version=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_OUTPUT
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@4f5b5234679dfa19837d4942067c97d7df43b7b3 # master
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ env.NORTHSTAR_VERSION }}
+            type=raw,value=${{ steps.northstar_version.outputs.version }}
             type=sha
 
       - name: Build Docker image
@@ -58,7 +59,7 @@ jobs:
           docker save ghcr.io/asillyneko/northstar-dedicated -o /tmp/northstar-dedicated.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # main
         with:
           path: /tmp/northstar-dedicated.tar
           archive: false
@@ -69,12 +70,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231 # main
         with:
           ref: ${{ inputs.ref || github.ref }}
 
       - name: Download Docker image
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # main
         with:
           name: northstar-dedicated.tar
           path: /tmp
@@ -93,7 +94,7 @@ jobs:
 
       - name: Upload log file
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # main
         with:
           path: /tmp/test-build-log.txt
           archive: false
@@ -107,13 +108,13 @@ jobs:
 
     steps:
       - name: Download Docker image
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # main
         with:
           name: northstar-dedicated.tar
           path: /tmp
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
+        uses: docker/login-action@9f4a8ea54ed9055d5f86c993e1f2ffa674f98344 # master
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}

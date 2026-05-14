@@ -1,0 +1,25 @@
+version: 2
+
+multi-ecosystem-groups:
+  everything:
+    schedule:
+      interval: "weekly"
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    multi-ecosystem-group: "everything"
+
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    multi-ecosystem-group: "everything"
+
+  - package-ecosystem: "nix"
+    directory: "/catornot-catornot-flakes"
+    schedule:
+      interval: "weekly"
+    multi-ecosystem-group: "everything"
