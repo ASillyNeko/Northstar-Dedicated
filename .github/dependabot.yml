@@ -11,15 +11,21 @@ updates:
     schedule:
       interval: "weekly"
     multi-ecosystem-group: "everything"
+    reviewers:
+      - "ASillyNeko"
 
   - package-ecosystem: "nix"
     directory: "/"
     schedule:
       interval: "weekly"
     multi-ecosystem-group: "everything"
+    reviewers:
+      - "ASillyNeko"
 
   - package-ecosystem: "nix"
     directory: "/catornot-catornot-flakes"
     schedule:
       interval: "weekly"
     multi-ecosystem-group: "everything"
+    reviewers:
+      - "ASillyNeko"
