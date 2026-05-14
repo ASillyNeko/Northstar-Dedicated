@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: ['**']
 
-permissions: {}
-
 jobs:
   zizmor:
     runs-on: ubuntu-latest
