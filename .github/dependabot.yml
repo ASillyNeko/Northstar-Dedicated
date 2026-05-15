@@ -10,28 +10,22 @@ updates:
     directory: /
     schedule:
       interval: daily
-    groups:
-      github-actions:
-        patterns:
-          - "*"
+    patterns:
+      - "*"
     multi-ecosystem-group: everything
 
   - package-ecosystem: nix
     directory: /
     schedule:
       interval: daily
-    groups:
-      nix:
-        patterns:
-          - "*"
+    patterns:
+      - "*"
     multi-ecosystem-group: everything
 
   - package-ecosystem: nix
     directory: /catornot-catornot-flakes
     schedule:
       interval: daily
-    groups:
-      nix-flakes:
-        patterns:
-          - "*"
+    patterns:
+      - "*"
     multi-ecosystem-group: everything
