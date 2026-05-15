@@ -51,11 +51,13 @@ jobs:
             type=sha
 
       - name: Build Docker image
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
         run: |
           nix build
           docker load -i result
 
-          for tag in $(echo "${{ steps.meta.outputs.tags }}"); do
+          for tag in $(echo "$TAGS"); do
             docker tag ghcr.io/asillyneko/northstar-dedicated:latest "$tag"
           done
 
@@ -118,7 +120,7 @@ jobs:
           path: /tmp
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@9f4a8ea54ed9055d5f86c993e1f2ffa674f98344 # v4.0.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}

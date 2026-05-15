@@ -65,6 +65,5 @@ jobs:
     uses: ./.github/workflows/ci.yml
     with:
       ref: ${{ needs.get-northstar-version.outputs.ref }}
-    secrets: inherit
     permissions:
       packages: write
