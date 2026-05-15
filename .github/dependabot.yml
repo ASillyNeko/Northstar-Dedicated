@@ -7,6 +7,8 @@ multi-ecosystem-groups:
 
 updates:
   - package-ecosystem: github-actions
+    cooldown:
+      default-days: 1
     directory: /
     schedule:
       interval: daily
@@ -15,6 +17,8 @@ updates:
     multi-ecosystem-group: everything
 
   - package-ecosystem: nix
+    cooldown:
+      default-days: 1
     directory: /
     schedule:
       interval: daily
@@ -23,6 +27,8 @@ updates:
     multi-ecosystem-group: everything
 
   - package-ecosystem: nix
+    cooldown:
+      default-days: 1
     directory: /catornot-catornot-flakes
     schedule:
       interval: daily
