@@ -11,7 +11,7 @@ updates:
       default-days: 7
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
@@ -21,7 +21,7 @@ updates:
       default-days: 7
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
@@ -31,7 +31,7 @@ updates:
       default-days: 7
     directory: /catornot-catornot-flakes
     schedule:
-      interval: weekly
+      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
