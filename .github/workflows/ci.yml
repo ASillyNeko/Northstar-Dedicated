@@ -4,12 +4,6 @@ on:
   push:
     paths: ['.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**']
   pull_request:
-    paths: ['.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**']
-  workflow_call:
-    inputs:
-      ref:
-        type: string
-        default: ''
   workflow_dispatch:
 
 env:
@@ -26,7 +20,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
 
       - name: Install nix
@@ -77,7 +70,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
 
       - name: Download Docker image
