@@ -64,6 +64,8 @@ jobs:
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ steps.generate-token.outputs.token }}
+          author: "northstar-dedicated-updater <northstar-dedicated-updater@users.noreply.github.com>"
+          committer: "northstar-dedicated-updater <northstar-dedicated-updater@users.noreply.github.com>"
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           title: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           branch: "northstar/${{ steps.version.outputs.LATEST_VERSION }}"
@@ -74,4 +76,4 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
-        run: gh pr merge --auto --squash "$PR_NUMBER"
+        run: gh pr merge --auto -s -d "$PR_NUMBER"
