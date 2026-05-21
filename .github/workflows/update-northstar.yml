@@ -55,7 +55,7 @@ jobs:
         if: steps.git-check.outputs.no_changes == 'false'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.NORTHSTAR_DEDICATED_PAT }}
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           title: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           branch: "northstar/${{ steps.version.outputs.LATEST_VERSION }}"
@@ -64,6 +64,6 @@ jobs:
       - name: Enable auto merge
         if: steps.git-check.outputs.no_changes == 'false' && steps.cpr.outputs.pull-request-operation == 'created'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.NORTHSTAR_DEDICATED_PAT }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
         run: gh pr merge --auto --squash "$PR_NUMBER"
