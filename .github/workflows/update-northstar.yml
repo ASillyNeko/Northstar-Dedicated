@@ -34,9 +34,12 @@ jobs:
           rm latest_release.json
 
       - name: Update northstar_version.sh
+        env:
+          NORTHSTAR_VERSION: ${{ steps.version.outputs.LATEST_VERSION }}
+          NORTHSTAR_SHA256: ${{ steps.version.outputs.LATEST_VERSION_SHA256 }}
         run: |
-          echo "export NORTHSTAR_VERSION=${{ steps.version.outputs.LATEST_VERSION }}" > northstar_version.sh
-          echo "export NORTHSTAR_GITHUB_SHA256SUM=sha256:${{ steps.version.outputs.LATEST_VERSION_SHA256 }}" >> northstar_version.sh
+          echo "export NORTHSTAR_VERSION=${NORTHSTAR_VERSION}" > northstar_version.sh
+          echo "export NORTHSTAR_GITHUB_SHA256SUM=sha256:${NORTHSTAR_SHA256}" >> northstar_version.sh
 
       - name: Check for Changes
         id: git-check
@@ -50,7 +53,7 @@ jobs:
       - name: Create Pull Request
         id: cpr
         if: steps.git-check.outputs.no_changes == 'false'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # 8.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
@@ -60,6 +63,7 @@ jobs:
 
       - name: Enable auto merge
         if: steps.git-check.outputs.no_changes == 'false' && steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        run: gh pr merge --auto --squash "$PR_NUMBER"
