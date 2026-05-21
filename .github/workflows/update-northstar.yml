@@ -23,10 +23,18 @@ jobs:
         with:
           persist-credentials: false
 
+
+      - name: Generate GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.NORTHSTAR_DEDICATED_CLIENT_ID }}
+          private-key: ${{ secrets.NORTHSTAR_DEDICATED_PRIVATE_KEY }}
+
       - name: Get Northstar Version
         id: version
         run: |
-          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
+          curl -s -H "Authorization: token ${{ steps.generate-token.outputs.token }}" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
           LATEST_VERSION=$(jq -r '.tag_name' latest_release.json)
           LATEST_VERSION_SHA256=$(jq -r '.assets[0].digest' latest_release.json | cut -d':' -f2)
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_OUTPUT
@@ -55,7 +63,7 @@ jobs:
         if: steps.git-check.outputs.no_changes == 'false'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ secrets.NORTHSTAR_DEDICATED_PAT }}
+          token: ${{ steps.generate-token.outputs.token }}
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           title: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           branch: "northstar/${{ steps.version.outputs.LATEST_VERSION }}"
@@ -64,6 +72,6 @@ jobs:
       - name: Enable auto merge
         if: steps.git-check.outputs.no_changes == 'false' && steps.cpr.outputs.pull-request-operation == 'created'
         env:
-          GH_TOKEN: ${{ secrets.NORTHSTAR_DEDICATED_PAT }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
         run: gh pr merge --auto --squash "$PR_NUMBER"
