@@ -2,13 +2,7 @@ name: ci
 
 on:
   push:
-    paths: ['.github/build/**', '.github/workflows/ci.yml', 'flake.nix', 'flake.lock', 'entrypoint.sh', 'northstar_version.sh', 'catornot-catornot-flakes/**']
   pull_request:
-  workflow_call:
-    inputs:
-      ref:
-        type: string
-        default: ''
   workflow_dispatch:
 
 env:
