@@ -68,7 +68,7 @@ jobs:
           committer: "northstar-dedicated-updater[bot] <northstar-dedicated-updater[bot]@users.noreply.github.com>"
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           title: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
-          branch: "northstar/${{ steps.version.outputs.LATEST_VERSION }}"
+          branch: "update-northstar"
           labels: dependencies
           delete-branch: true
 
@@ -77,4 +77,4 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
           PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
-        run: gh pr merge --auto -s -d "$PR_NUMBER"
+        run: gh pr merge --auto -s "$PR_NUMBER"
