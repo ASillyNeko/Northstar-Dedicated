@@ -10,7 +10,7 @@ on:
 permissions: {}
 
 jobs:
-  get-northstar-version:
+  update-northstar:
     if: github.repository == 'ASillyNeko/Northstar-Dedicated' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-slim
     permissions:
