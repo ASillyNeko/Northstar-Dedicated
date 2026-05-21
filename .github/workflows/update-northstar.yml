@@ -69,6 +69,7 @@ jobs:
           commit-message: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           title: "Update Northstar version to ${{ steps.version.outputs.LATEST_VERSION }}"
           branch: "northstar/${{ steps.version.outputs.LATEST_VERSION }}"
+          labels: dependencies
           delete-branch: true
 
       - name: Enable auto merge
