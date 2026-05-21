@@ -19,7 +19,7 @@ services:
         NS_EXTRA_ARGUMENTS=
         +ns_server_name "Example Barebones Northstar Docker Server"
         +ns_server_desc "Example Server Desc https://northstar.tf"
-        -multiple 
+        -multiple
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
     ports:
