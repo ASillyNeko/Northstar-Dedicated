@@ -30,11 +30,14 @@ jobs:
         with:
           client-id: ${{ secrets.NORTHSTAR_DEDICATED_CLIENT_ID }}
           private-key: ${{ secrets.NORTHSTAR_DEDICATED_PRIVATE_KEY }}
+          skip-token-revoke: true
 
       - name: Get Northstar Version
         id: version
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          curl -s -H "Authorization: token ${{ steps.generate-token.outputs.token }}" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
+          curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_release.json
           LATEST_VERSION=$(jq -r '.tag_name' latest_release.json)
           LATEST_VERSION_SHA256=$(jq -r '.assets[0].digest' latest_release.json | cut -d':' -f2)
           echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_OUTPUT

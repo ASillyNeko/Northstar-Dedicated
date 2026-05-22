@@ -18,6 +18,7 @@ jobs:
         with:
           client-id: ${{ secrets.NORTHSTAR_DEDICATED_CLIENT_ID }}
           private-key: ${{ secrets.NORTHSTAR_DEDICATED_PRIVATE_KEY }}
+          skip-token-revoke: true
 
       - name: Enable auto merge
         run: gh pr merge --auto -s "$PR_URL"
