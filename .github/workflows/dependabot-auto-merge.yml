@@ -8,9 +8,6 @@ jobs:
   auto-merge:
     if: github.repository == 'ASillyNeko/Northstar-Dedicated' && github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-slim
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - name: Generate GitHub App Token
@@ -19,6 +16,10 @@ jobs:
         with:
           client-id: ${{ secrets.NORTHSTAR_DEDICATED_CLIENT_ID }}
           private-key: ${{ secrets.NORTHSTAR_DEDICATED_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Enable auto merge
         run: gh pr merge --auto -s "$PR_URL"

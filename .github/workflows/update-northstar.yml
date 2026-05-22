@@ -13,9 +13,6 @@ jobs:
   update-northstar:
     if: github.repository == 'ASillyNeko/Northstar-Dedicated' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-slim
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -30,6 +27,10 @@ jobs:
         with:
           client-id: ${{ secrets.NORTHSTAR_DEDICATED_CLIENT_ID }}
           private-key: ${{ secrets.NORTHSTAR_DEDICATED_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.repository }}
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Get Northstar Version
         id: version
