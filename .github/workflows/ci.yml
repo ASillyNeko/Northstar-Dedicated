@@ -119,6 +119,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Load and push Docker image
+        env:
+          Registry: ${{ env.REGISTRY }}
         run: |
           docker load -i /tmp/northstar-dedicated.tar
-          docker push --all-tags ${{ env.REGISTRY }}/${IMAGE_NAME,,}
+          docker push --all-tags ${Registry}/${IMAGE_NAME,,}
