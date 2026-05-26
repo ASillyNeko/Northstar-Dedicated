@@ -3,15 +3,13 @@ version: 2
 multi-ecosystem-groups:
   everything:
     schedule:
-      interval: weekly
+      interval: daily
 
 updates:
   - package-ecosystem: github-actions
     cooldown:
       default-days: 7
     directory: /
-    schedule:
-      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
@@ -20,8 +18,6 @@ updates:
     cooldown:
       default-days: 7
     directory: /
-    schedule:
-      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
@@ -30,8 +26,6 @@ updates:
     cooldown:
       default-days: 7
     directory: /catornot-catornot-flakes
-    schedule:
-      interval: daily
     patterns:
       - "*"
     multi-ecosystem-group: everything
