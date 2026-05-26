@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "Northstar-Dedicated docker image builder";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
