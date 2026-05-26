@@ -113,12 +113,12 @@
         buildInputs = [
         ];
 
+        phases = [ "buildPhase" ];
+
         buildPhase = ''
           mkdir -p $out/bin/
           gcc -Wall -Wextra $src/nswrap/nswrap.c -o $out/bin/nswrap
         '';
-
-        dontInstall = true;
 
         meta = {
           mainProgram = "nswrap";
