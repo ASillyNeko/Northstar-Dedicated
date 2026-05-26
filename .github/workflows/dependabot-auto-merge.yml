@@ -1,6 +1,6 @@
 name: dependabot-auto-merge
 
-on: pull_request_target
+on: pull_request_target # zizmor: ignore[dangerous-triggers] only runs if the user is dependabot[bot]
 
 permissions: {}
 
