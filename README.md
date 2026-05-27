@@ -23,7 +23,7 @@ services:
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
     ports:
-      - '37016:37016'
+      - '37016:37016/udp'
     restart: always
 ```
 
@@ -68,7 +68,7 @@ services:
       - /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro
       - /home/neko/northstar/Attrition-Extended-Recode-Save-Data:/mnt/northstar/R2Northstar/save_data
     ports:
-      - '37016:37016'
+      - '37016:37016/udp'
     restart: always
 ```
 
