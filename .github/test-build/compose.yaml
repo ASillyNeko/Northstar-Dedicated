@@ -1,7 +1,7 @@
 services:
   northstar-dedicated:
     image: ghcr.io/asillyneko/northstar-dedicated:latest
-    network_mode: host # DO NOT REMOVE
+    network_mode: host
     tty: true
     stdin_open: true
     environment:
