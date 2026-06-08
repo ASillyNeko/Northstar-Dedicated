@@ -1,6 +1,6 @@
 services:
   northstar-dedicated:
-    image: ghcr.io/asillyneko/northstar-dedicated:latest
+    image: ghcr.io/asillyneko/northstar-dedicated
     network_mode: host
     tty: true
     stdin_open: true
