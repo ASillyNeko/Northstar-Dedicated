@@ -80,13 +80,13 @@ jobs:
 
       - name: Test Docker image
         run: |
-          cd .github/build
+          cd .github/test-build
           curl -fO https://titanfall2-files-github-actions.asillyneko.dev/titanfall2-files-github-actions.zip
           unzip titanfall2-files-github-actions.zip -d titanfall2-files-github-actions
           rm titanfall2-files-github-actions.zip
           docker load -i /tmp/northstar-dedicated.tar
           docker compose up -d
-          timeout 120s python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; exit 1 )
+          timeout 2m python3 wait_for_ping.py || ( echo "Failed."; docker compose logs > /tmp/test-build-log.txt; exit 1 )
           docker compose logs > /tmp/test-build-log.txt
           docker compose kill
 
