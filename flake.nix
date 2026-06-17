@@ -162,11 +162,11 @@
         name = "ghcr.io/asillyneko/northstar-dedicated";
         tag = "latest";
 
-        # 3.23.4
+        # 3.24.1
         fromImage = pkgs.dockerTools.pullImage {
           imageName = "alpine";
-          imageDigest = "sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11";
-          sha256 = "sha256-vI46SeZqcFQF+4+IThG/NwWIQqG+z0zpVepvdDvMpTs=";
+          imageDigest = "sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b";
+          sha256 = "sha256-F/ULD0GeKUqE5JPGNWEf3oQtgPgeBsnT4+/WIcXDhKI=";
         };
 
         contents = [
