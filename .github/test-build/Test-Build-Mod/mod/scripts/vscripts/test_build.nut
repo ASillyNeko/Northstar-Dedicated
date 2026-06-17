@@ -31,6 +31,7 @@ void function TestBuild_SendRequest()
 
 	void functionref( HttpRequestResponse ) onSuccess = void function( HttpRequestResponse response )
 	{
+		/*
 		if ( NSIsSuccessHttpCode( response.statusCode ) )
 		{
 			// For testing locally
@@ -46,6 +47,15 @@ void function TestBuild_SendRequest()
 			printt( "Failed https request: response.statusCode=" + response.statusCode )
 			ServerCommand( "quit" )
 		}
+*/
+
+		// For testing locally
+		#if DEV
+			printt( "Success." )
+			ServerCommand( "quit" )
+		#else
+			NSHttpGet( "127.0.0.1:7274" )
+		#endif
 	}
 
 	void functionref( HttpRequestFailure ) onFailure = void function( HttpRequestFailure response )
