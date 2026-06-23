@@ -16,7 +16,7 @@ updates:
 
   - package-ecosystem: nix
     cooldown:
-      default-days: 7
+      default-days: 6
     directory: /
     patterns:
       - "*"
