@@ -32,7 +32,7 @@ jobs:
 
       - name: Get Northstar version
         id: northstar_version
-        run: echo "version=$(grep 'export NORTHSTAR_VERSION=' northstar_version.sh | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+        run: echo "version=$(grep 'export NORTHSTAR_VERSION=' versions.sh | cut -d '=' -f2)" >> $GITHUB_OUTPUT
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta

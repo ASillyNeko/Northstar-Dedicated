@@ -125,14 +125,25 @@
         };
       };
 
+      alpineDigest = builtins.head (
+        builtins.match ".*ALPINE_DIGEST=([^ ]+).*" (
+          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./versions.sh)
+        )
+      );
+      alpineSha256sum = builtins.head (
+        builtins.match ".*ALPINE_SHA256SUM=([^ ]+).*" (
+          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./versions.sh)
+        )
+      );
+
       northstarVersion = builtins.head (
         builtins.match ".*NORTHSTAR_VERSION=([^ ]+).*" (
-          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./northstar_version.sh)
+          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./versions.sh)
         )
       );
       northstarSha256sum = builtins.head (
-        builtins.match ".*NORTHSTAR_GITHUB_SHA256SUM=([^ ]+).*" (
-          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./northstar_version.sh)
+        builtins.match ".*NORTHSTAR_SHA256SUM=([^ ]+).*" (
+          builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile ./versions.sh)
         )
       );
 
@@ -162,11 +173,11 @@
         name = "ghcr.io/asillyneko/northstar-dedicated";
         tag = "latest";
 
-        # 3.24.1
+        # latest
         fromImage = pkgs.dockerTools.pullImage {
           imageName = "alpine";
-          imageDigest = "sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b";
-          sha256 = "sha256-F/ULD0GeKUqE5JPGNWEf3oQtgPgeBsnT4+/WIcXDhKI=";
+          imageDigest = alpineDigest;
+          sha256 = alpineSha256sum;
         };
 
         contents = [
