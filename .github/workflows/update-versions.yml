@@ -38,6 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
+          echo 'unqualified-search-registries = [ "docker.io" ]' | sudo tee /etc/containers/registries.conf
           ALPINE_OUTPUT=$(nix run github:NixOS/nixpkgs/nixos-unstable#nix-prefetch-docker -- \
           --image-name alpine \
           --image-tag latest \
@@ -45,6 +46,8 @@ jobs:
           --quiet)
           LATEST_ALPINE_DIGEST=$(echo "$ALPINE_OUTPUT" | sed -n 's/.*imageDigest = "\([^"]*\)".*/\1/p')
           LATEST_ALPINE_SHA256SUM=$(echo "$ALPINE_OUTPUT" | sed -n 's/.*hash = "\([^"]*\)".*/\1/p')
+          echo "LATEST_ALPINE_DIGEST=$LATEST_ALPINE_DIGEST" >> $GITHUB_OUTPUT
+          echo "LATEST_ALPINE_SHA256SUM=$LATEST_ALPINE_SHA256SUM" >> $GITHUB_OUTPUT
           curl -s -H "Authorization: token $GH_TOKEN" https://api.github.com/repos/R2Northstar/Northstar/releases/latest > latest_northstar_release.json
           LATEST_NORTHSTAR_VERSION=$(jq -r '.tag_name' latest_northstar_release.json)
           LATEST_NORTHSTAR_VERSION_SHA256SUM=$(jq -r '.assets[0].digest' latest_northstar_release.json)
