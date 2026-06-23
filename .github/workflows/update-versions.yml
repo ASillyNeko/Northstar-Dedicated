@@ -63,9 +63,9 @@ jobs:
           NORTHSTAR_SHA256SUM: ${{ steps.version.outputs.LATEST_NORTHSTAR_VERSION_SHA256SUM }}
         run: |
           echo "export ALPINE_DIGEST=${ALPINE_DIGEST}" > versions.sh
-          echo "export ALPINE_SHA256SUM=sha256:${ALPINE_SHA256SUM}" >> versions.sh
+          echo "export ALPINE_SHA256SUM=${ALPINE_SHA256SUM}" >> versions.sh
           echo "export NORTHSTAR_VERSION=${NORTHSTAR_VERSION}" >> versions.sh
-          echo "export NORTHSTAR_SHA256SUM=sha256:${NORTHSTAR_SHA256SUM}" >> versions.sh
+          echo "export NORTHSTAR_SHA256SUM=${NORTHSTAR_SHA256SUM}" >> versions.sh
 
       - name: Check for Changes
         id: git-check
