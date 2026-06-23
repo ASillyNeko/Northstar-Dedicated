@@ -38,7 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          ALPINE_OUTPUT=$(nix run nixpkgs#nix-prefetch-docker -- \
+          ALPINE_OUTPUT=$(nix run github:NixOS/nixpkgs/nixos-unstable#nix-prefetch-docker -- \
           --image-name alpine \
           --image-tag latest \
           --arch amd64 \
