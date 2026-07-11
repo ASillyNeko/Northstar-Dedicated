@@ -188,6 +188,7 @@
         extraCommands = ''
           mkdir -p home/northstar mnt/northstar
           cp -r ${northstar}/* mnt/northstar/
+          rm -r /mnt/northstar/Northstar.Custom/mod/paks /mnt/northstar/Northstar.Custom/mod/vpk /mnt/northstar/Northstar.Custom/mod/models/northstartree
         '';
 
         config = {
