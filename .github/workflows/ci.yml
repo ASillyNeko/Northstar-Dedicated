@@ -69,7 +69,7 @@ jobs:
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
         run: |
-          sudo cp /usr/share/containers/registries.conf /etc/containers/registries.conf
+          echo -e '[[registry]]\nlocation = "docker.io"' | sudo tee /etc/containers/registries.conf
           nix build
           docker load -i result
 
