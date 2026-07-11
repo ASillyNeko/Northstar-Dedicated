@@ -23,11 +23,9 @@ jobs:
           persist-credentials: false
 
       - name: Install nix
-        uses: nixbuild/nix-quick-install-action@9f63be77f412a248c9d9a65a4c82cf066cdf8f0c # v35
+        uses: cachix/install-nix-action@v31
         with:
-          nix_conf: |
-            keep-env-derivations = true
-            keep-outputs = true
+          nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Restore and save Nix store
         uses: nix-community/cache-nix-action@7df957e333c1e5da7721f60227dbba6d06080569 # v7
