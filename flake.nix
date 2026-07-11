@@ -156,7 +156,10 @@
         };
 
         nativeBuildInputs = [ pkgs.unzip ];
-        unpackPhase = "unzip $src -d $out";
+        unpackPhase = ''
+          unzip $src -d $out
+          rm -r $out/R2Northstar/mods/Northstar.Custom/paks $out/R2Northstar/mods/Northstar.Custom/vpk $out/R2Northstar/mods/Northstar.Custom/mod/models/northstartree
+        '';
       };
 
       entrypoint = pkgs.runCommand "entrypoint.sh" { } ''
@@ -188,7 +191,6 @@
         extraCommands = ''
           mkdir -p home/northstar mnt/northstar
           cp -r ${northstar}/* mnt/northstar/
-          rm -rf mnt/northstar/R2Northstar/mods/Northstar.Custom/mod/paks mnt/northstar/R2Northstar/mods/Northstar.Custom/mod/vpk mnt/northstar/R2Northstar/mods/Northstar.Custom/mod/models/northstartree
         '';
 
         config = {
