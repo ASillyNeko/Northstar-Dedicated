@@ -69,8 +69,6 @@
           pname = "nswine";
           version = "1.0.0";
 
-          src = ./.;
-
           nativeBuildInputs = [
             nswine-go
             pkgs.removeReferencesTo
