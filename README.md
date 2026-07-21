@@ -121,22 +121,22 @@ Also make sure both of these `'37016:37016'` are set to the same port as `NS_POR
 #### Required Volumes
 
 ##### Titanfall 2 install
-- `- /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro` Needed to run dedicated server (Should always have `:ro`)
+- `- /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro` Needed to run dedicated server (Can use `:ro`)
 
 #### Optional Volumes
 
 ##### Custom northstar install
-- `- /home/neko/northstar/Attrition-Extended-Recode:/mnt/northstar` Replaces files in northstar with ones in that directory. (Should never have `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode:/mnt/northstar` Replaces files in northstar with ones in that directory. (Can't use `:ro`)
 
 ##### Mods
-- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory. (Should always have `:ro`)
-- `- /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod. (Should always have `:ro`)
-- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods. (Should always have `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro` Adds all the mods in this directory. (Can use `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Mods/Nekos.Attrition.Extended.Recode:/mnt/mods/Nekos.Attrition.Extended.Recode:ro` Adds this mod. (Can use `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/northstar/R2Northstar/mods/:ro` Replaces all the mods in this directory including built-in mods. (Can use `:ro`)
 
 ##### Plugins
-- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro` Adds all the plugins in this directory. (Should always have `:ro`)
-- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins/bp-ort.dll:/mnt/plugins/bp-ort.dll:ro` Adds this plugin. (Should always have `:ro`)
-- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins. (Should always have `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro` Adds all the plugins in this directory. (Can use `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins/bp-ort.dll:/mnt/plugins/bp-ort.dll:ro` Adds this plugin. (Can use `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/northstar/R2Northstar/plugins/:ro` Replaces all the plugins in this directory including built-in plugins. (Can use `:ro`)
 
 ##### Save data
-- `- /home/neko/northstar/Attrition-Extended-Recode-Save-Data:/mnt/northstar/R2Northstar/save_data` Reads and writes save data for mods, should be different for each server. (Should never have `:ro`)
+- `- /home/neko/northstar/Attrition-Extended-Recode-Save-Data:/mnt/northstar/R2Northstar/save_data` Reads and writes save data for mods, should be different for each server. (Can't use `:ro`)
