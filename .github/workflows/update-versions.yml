@@ -11,7 +11,7 @@ permissions: {}
 
 jobs:
   update-versions:
-    if: github.repository == 'ASillyNeko/Northstar-Dedicated'
+    if: github.repository == 'ASillyNeko/Northstar-Dedicated' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
