@@ -39,6 +39,7 @@ services:
     environment:
       - NS_PORT=37016
       - NSWRAP_NOWATCHDOGQUIT=0 # Set to 1 if ns_report_server_to_masterserver is set to 0
+      - NS_ARGUMENTS=-noshaderapi -nowindow
       - |
         NS_EXTRA_ARGUMENTS=
         +ns_server_name "Example Skirmish Northstar Docker Server"
@@ -64,9 +65,9 @@ services:
         -nopakdedi
     volumes:
       - /home/neko/northstar/titanfall2-files:/mnt/titanfall2:ro
-      - /home/neko/northstar/Attrition-Extended-Recode-Mods:/mnt/mods/:ro
-      - /home/neko/northstar/Attrition-Extended-Recode-Plugins:/mnt/plugins:ro
-      - /home/neko/northstar/Attrition-Extended-Recode-Save-Data:/mnt/northstar/R2Northstar/save_data
+      - /home/neko/northstar/Skirmish-Mods:/mnt/mods/:ro
+      - /home/neko/northstar/Skirmish-Plugins:/mnt/plugins:ro
+      - /home/neko/northstar/Skirmish-Save-Data:/mnt/northstar/R2Northstar/save_data
     ports:
       - '37016:37016/udp'
     restart: unless-stopped
