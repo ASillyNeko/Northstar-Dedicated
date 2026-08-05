@@ -189,4 +189,4 @@ fi
 
 export PATH=/home/northstar/nswine/bin:$PATH
 
-exec /home/northstar/nswrap/bin/nswrap -dedicated ${NS_ARGUMENTS:-} -port "$PORT"
+exec /home/northstar/nswrap/bin/nswrap -dedicated -port "$PORT" ${NS_ARGUMENTS:-}
