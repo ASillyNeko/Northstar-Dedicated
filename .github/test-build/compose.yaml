@@ -7,7 +7,6 @@ services:
     environment:
       - NS_PORT=37016
       - NSWRAP_NOWATCHDOGQUIT=1
-      - NS_ARGUMENTS=-noshaderapi -nowindow
       - |
         NS_EXTRA_ARGUMENTS=
         +setplaylist tdm
